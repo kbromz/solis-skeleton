@@ -1,18 +1,164 @@
+{% comment %}
+  snippets/css-variables.liquid  (REPLACE Skeleton's existing file with this)
+  Wires the SOLIS theme settings into :root CSS variables.
+  Variable names match what your ported SOLIS components already reference
+  (e.g. --font-body--family, --color-foreground), so components connect with
+  minimal edits. --font-primary--family is kept as an alias so Skeleton's own
+  base styles keep working.
+{% endcomment %}
+
 {% style %}
-  {% # Loads all font variantions with display: swap %}
-  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {% # Load all four font roles with bold + italic variants, display: swap %}
+  {% assign body_font = settings.type_body_font %}
+  {% assign sub_font = settings.type_subheading_font %}
+  {% assign head_font = settings.type_heading_font %}
+  {% assign accent_font = settings.type_accent_font %}
+
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ body_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ sub_font | font_face: font_display: 'swap' }}
+  {{ sub_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ head_font | font_face: font_display: 'swap' }}
+  {{ head_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ accent_font | font_face: font_display: 'swap' }}
 
   :root {
-    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
-    --font-primary--style: {{ settings.type_primary_font.style }};
-    --font-primary--weight: {{ settings.type_primary_font.weight }};
-    --page-width: {{ settings.max_page_width }};
-    --page-margin: {{ settings.min_page_margin }}px;
-    --color-background: {{ settings.background_color }};
-    --color-foreground: {{ settings.foreground_color }};
-    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+    /* Font families */
+    --font-body--family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body--style: {{ body_font.style }};
+    --font-body--weight: {{ body_font.weight }};
+
+    --font-subheading--family: {{ sub_font.family }}, {{ sub_font.fallback_families }};
+    --font-subheading--style: {{ sub_font.style }};
+    --font-subheading--weight: {{ sub_font.weight }};
+
+    --font-heading--family: {{ head_font.family }}, {{ head_font.fallback_families }};
+    --font-heading--style: {{ head_font.style }};
+    --font-heading--weight: {{ head_font.weight }};
+
+    --font-accent--family: {{ accent_font.family }}, {{ accent_font.fallback_families }};
+    --font-accent--style: {{ accent_font.style }};
+    --font-accent--weight: {{ accent_font.weight }};
+
+    /* Alias so Skeleton's base CSS (which uses --font-primary--family) keeps working */
+    --font-primary--family: var(--font-body--family);
+    --font-primary--style: var(--font-body--style);
+    --font-primary--weight: var(--font-body--weight);
+
+    /* Paragraph */
+    --paragraph-size: {{ settings.type_size_paragraph }};
+    --paragraph-line-height: {{ settings.type_line_height_paragraph }};
+    --paragraph-letter-spacing: {{ settings.type_letter_spacing_paragraph }};
+    --paragraph-case: {{ settings.type_case_paragraph }};
+
+    /* Heading type scale (font role value matches the family var suffix) */
+    --h1-font-family: var(--font-{{ settings.type_font_h1 }}--family);
+    --h1-size: {{ settings.type_size_h1 }};
+    --h1-line-height: {{ settings.type_line_height_h1 }};
+    --h1-letter-spacing: {{ settings.type_letter_spacing_h1 }};
+    --h1-case: {{ settings.type_case_h1 }};
+
+    --h2-font-family: var(--font-{{ settings.type_font_h2 }}--family);
+    --h2-size: {{ settings.type_size_h2 }};
+    --h2-line-height: {{ settings.type_line_height_h2 }};
+    --h2-letter-spacing: {{ settings.type_letter_spacing_h2 }};
+    --h2-case: {{ settings.type_case_h2 }};
+
+    --h3-font-family: var(--font-{{ settings.type_font_h3 }}--family);
+    --h3-size: {{ settings.type_size_h3 }};
+    --h3-line-height: {{ settings.type_line_height_h3 }};
+    --h3-letter-spacing: {{ settings.type_letter_spacing_h3 }};
+    --h3-case: {{ settings.type_case_h3 }};
+
+    --h4-font-family: var(--font-{{ settings.type_font_h4 }}--family);
+    --h4-size: {{ settings.type_size_h4 }};
+    --h4-line-height: {{ settings.type_line_height_h4 }};
+    --h4-letter-spacing: {{ settings.type_letter_spacing_h4 }};
+    --h4-case: {{ settings.type_case_h4 }};
+
+    --h5-font-family: var(--font-{{ settings.type_font_h5 }}--family);
+    --h5-size: {{ settings.type_size_h5 }};
+    --h5-line-height: {{ settings.type_line_height_h5 }};
+    --h5-letter-spacing: {{ settings.type_letter_spacing_h5 }};
+    --h5-case: {{ settings.type_case_h5 }};
+
+    --h6-font-family: var(--font-{{ settings.type_font_h6 }}--family);
+    --h6-size: {{ settings.type_size_h6 }};
+    --h6-line-height: {{ settings.type_line_height_h6 }};
+    --h6-letter-spacing: {{ settings.type_letter_spacing_h6 }};
+    --h6-case: {{ settings.type_case_h6 }};
+
+    /* Layout */
+    --page-width: {{ settings.page_width }};
+    --page-margin: {{ settings.page_margin }}px;
+
+    /* Logo */
+    --logo-height: {{ settings.logo_height }}px;
+    --logo-height-mobile: {{ settings.logo_height_mobile }}px;
+
+    /* Buttons */
+    --button-primary-border-width: {{ settings.primary_button_border_width }}px;
+    --button-primary-radius: {{ settings.button_border_radius_primary }}px;
+    --button-primary-font: var(--font-{{ settings.type_font_button_primary }}--family);
+    --button-primary-case: {{ settings.button_text_case_primary }};
+    --button-secondary-border-width: {{ settings.secondary_button_border_width }}px;
+    --button-secondary-radius: {{ settings.button_border_radius_secondary }}px;
+    --button-secondary-font: var(--font-{{ settings.type_font_button_secondary }}--family);
+    --button-secondary-case: {{ settings.button_text_case_secondary }};
+    --pills-radius: {{ settings.pills_border_radius }}px;
+
+    /* Inputs (alias keeps Skeleton's base styles working) */
+    --inputs-border-width: {{ settings.input_border_width }}px;
+    --inputs-border-radius: {{ settings.inputs_border_radius }}px;
+    --style-border-radius-inputs: {{ settings.inputs_border_radius }}px;
+
+    /* Badges */
+    --badge-corner-radius: {{ settings.badge_corner_radius }}px;
+    --badge-font: var(--font-{{ settings.badge_font_family }}--family);
+    --badge-case: {{ settings.badge_text_transform }};
+
+    /* Drawers / popovers */
+    --drawer-border-width: {{ settings.drawer_border_width }}px;
+    --drawer-border-opacity: {{ settings.drawer_border_opacity | divided_by: 100.0 }};
+    --popover-radius: {{ settings.popover_border_radius }}px;
+    --popover-border-width: {{ settings.popover_border_width }}px;
+    --popover-border-opacity: {{ settings.popover_border_opacity | divided_by: 100.0 }};
+
+    /* Swatches */
+    --swatch-width: {{ settings.variant_swatch_width }}px;
+    --swatch-height: {{ settings.variant_swatch_height }}px;
+    --swatch-radius: {{ settings.variant_swatch_radius }}px;
+    --swatch-border-width: {{ settings.variant_swatch_border_width }}px;
+    --swatch-border-opacity: {{ settings.variant_swatch_border_opacity | divided_by: 100.0 }};
+
+    /* Variant buttons */
+    --variant-button-border-width: {{ settings.variant_button_border_width }}px;
+    --variant-button-radius: {{ settings.variant_button_radius }}px;
+
+    /* Search / predictive */
+    --predictive-product-radius: {{ settings.product_corner_radius }}px;
+    --predictive-card-radius: {{ settings.card_corner_radius }}px;
   }
+
+  /* Apply the type scale */
+  body {
+    font-family: var(--font-body--family);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+  }
+  p, .rte {
+    font-size: var(--paragraph-size);
+    line-height: var(--paragraph-line-height);
+    letter-spacing: var(--paragraph-letter-spacing);
+    text-transform: var(--paragraph-case);
+  }
+  h1, .h1 { font-family: var(--h1-font-family); font-size: var(--h1-size); line-height: var(--h1-line-height); letter-spacing: var(--h1-letter-spacing); text-transform: var(--h1-case); }
+  h2, .h2 { font-family: var(--h2-font-family); font-size: var(--h2-size); line-height: var(--h2-line-height); letter-spacing: var(--h2-letter-spacing); text-transform: var(--h2-case); }
+  h3, .h3 { font-family: var(--h3-font-family); font-size: var(--h3-size); line-height: var(--h3-line-height); letter-spacing: var(--h3-letter-spacing); text-transform: var(--h3-case); }
+  h4, .h4 { font-family: var(--h4-font-family); font-size: var(--h4-size); line-height: var(--h4-line-height); letter-spacing: var(--h4-letter-spacing); text-transform: var(--h4-case); }
+  h5, .h5 { font-family: var(--h5-font-family); font-size: var(--h5-size); line-height: var(--h5-line-height); letter-spacing: var(--h5-letter-spacing); text-transform: var(--h5-case); }
+  h6, .h6 { font-family: var(--h6-font-family); font-size: var(--h6-size); line-height: var(--h6-line-height); letter-spacing: var(--h6-letter-spacing); text-transform: var(--h6-case); }
 {% endstyle %}
+
+{% render 'color-schemes' %}
