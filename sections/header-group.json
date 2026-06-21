@@ -17,9 +17,16 @@
         "menu": "main-menu",
         "customer_account_menu": "customer-account-main-menu"
       }
+    },
+    "custom_section_fyHtkk": {
+      "type": "custom-section",
+      "disabled": true,
+      "name": "t:general.custom_section",
+      "settings": {}
     }
   },
   "order": [
-    "header"
+    "header",
+    "custom_section_fyHtkk"
   ]
 }
