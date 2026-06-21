@@ -1,0 +1,16 @@
+{% style %}
+  {% for scheme in settings.color_schemes %}
+    {% assign s = scheme.settings %}
+    .color-{{ scheme.id }} {
+      --color-background: {{ s.background }};
+      --color-foreground: {{ s.foreground }};
+      --color-button: {{ s.button }};
+      --color-button-label: {{ s.button_label }};
+      --color-secondary-button-label: {{ s.secondary_button_label }};
+      --color-shadow: {{ s.shadow }};
+ 
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+    }
+  {% endfor %}
+{% endstyle %}
