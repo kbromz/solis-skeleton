@@ -174,7 +174,7 @@
               "type": "heading",
               "name": "Heading",
               "settings": {
-                "heading": "<p>testing this container out</p>",
+                "heading": "<h1>testing this container out</h1>",
                 "heading_tag": "h2",
                 "heading_preset": "default",
                 "heading_font": "heading",
@@ -194,9 +194,9 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>Text</p>",
+                "text": "<h1>Text</h1>",
                 "heading_tag": "h2",
-                "heading_preset": "custom",
+                "heading_preset": "h1",
                 "heading_font": "heading",
                 "heading_size": "3.5rem",
                 "heading_line_height": "tight",
