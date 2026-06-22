@@ -22,7 +22,7 @@
             "image_2": "shopify://shop_images/solis-med-spa-aesthetician-shopify-template-trio-luxe-moisture-treatment-hydrators-skinbetter-2.jpg",
             "split_gap": 0,
             "mobile_media": "first_only",
-            "content_position_desktop": "center-center",
+            "content_position_desktop": "bottom-right",
             "content_position_mobile": "bottom-center",
             "eyebrow": "NEW COLLECTION",
             "eyebrow_preset": "default",
@@ -151,16 +151,16 @@
           "type": "container",
           "name": "Container",
           "settings": {
-            "direction": "row",
+            "direction": "column",
             "align_x": "left",
             "align_y": "top",
             "gap": 66,
             "width": "custom",
             "height": "fit",
-            "padding_top": 30,
-            "padding_right": 42,
-            "padding_bottom": 12,
-            "padding_left": 26
+            "padding_top": 0,
+            "padding_right": 0,
+            "padding_bottom": 0,
+            "padding_left": 0
           },
           "blocks": {
             "heading_GxFi4Q": {
@@ -169,17 +169,17 @@
               "settings": {
                 "heading": "<h1>testing this container out</h1>",
                 "heading_tag": "h2",
-                "heading_preset": "default",
+                "heading_preset": "h1",
                 "heading_font": "heading",
                 "heading_size": "3.5rem",
                 "heading_line_height": "tight",
                 "heading_letter_spacing": "normal",
                 "heading_case": "none",
                 "heading_wrap": "balance",
-                "padding_top": 48,
-                "padding_right": 48,
-                "padding_bottom": 48,
-                "padding_left": 48
+                "padding_top": 0,
+                "padding_right": 0,
+                "padding_bottom": 0,
+                "padding_left": 0
               },
               "blocks": {}
             },
