@@ -1,0 +1,105 @@
+{% comment %}
+  blocks/announcement.liquid  (create in blocks/)
+  One announcement slide. Same controls as SOLIS: text, link, font, size,
+  weight, letter-spacing, case. Clean — no Horizon snippets or assets.
+{% endcomment %}
+
+{%- liquid
+  assign s = block.settings
+  assign plain = s.text | strip_newlines | strip_html | strip
+  assign idx = section.blocks | find_index: 'id', block.id
+
+  case s.letter_spacing
+    when 'tight'
+      assign ls = '-0.02em'
+    when 'loose'
+      assign ls = '0.08em'
+    else
+      assign ls = '0'
+  endcase
+-%}
+
+{%- unless plain == '' -%}
+  <div
+    class="announcement-bar__slide"
+    aria-hidden="{% if idx == 0 %}false{% else %}true{% endif %}"
+    style="
+      font-family: {{ s.font }};
+      {% if s.font_size != '' %}font-size: {{ s.font_size }};{% endif %}
+      {% if s.weight != '' %}font-weight: {{ s.weight }};{% endif %}
+      letter-spacing: {{ ls }};
+      text-transform: {{ s.case }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <p class="announcement-bar__text">{{ s.text }}</p>
+    {%- if s.link != blank -%}
+      <a class="announcement-bar__link" href="{{ s.link }}">
+        <span class="visually-hidden">{{ s.text | strip_html }}</span>
+      </a>
+    {%- endif -%}
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Announcement",
+  "tag": null,
+  "settings": [
+    { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Shop our latest arrivals" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "header", "content": "Typography" },
+    {
+      "type": "select", "id": "font", "label": "Font", "default": "var(--font-body--family)",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ]
+    },
+    {
+      "type": "select", "id": "font_size", "label": "Size", "default": "1rem",
+      "options": [
+        { "value": "", "label": "Default" },
+        { "value": "0.625rem", "label": "10px" },
+        { "value": "0.75rem", "label": "12px" },
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" },
+        { "value": "1.5rem", "label": "24px" }
+      ]
+    },
+    {
+      "type": "select", "id": "weight", "label": "Weight", "default": "",
+      "options": [
+        { "value": "", "label": "Default" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "select", "id": "letter_spacing", "label": "Letter spacing", "default": "normal",
+      "options": [
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ]
+    },
+    {
+      "type": "select", "id": "case", "label": "Case", "default": "none",
+      "options": [
+        { "value": "none", "label": "Default" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Announcement", "settings": { "font": "var(--font-subheading--family)", "font_size": "0.75rem" } }
+  ]
+}
+{% endschema %}
