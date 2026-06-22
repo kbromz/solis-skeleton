@@ -181,7 +181,39 @@
               "settings": {
                 "text": "<p>Text</p>",
                 "heading_tag": "h2",
-                "heading_preset": "h1",
+                "heading_preset": "custom",
+                "heading_font": "heading",
+                "heading_size": "3.5rem",
+                "heading_line_height": "tight",
+                "heading_letter_spacing": "normal",
+                "heading_case": "none",
+                "heading_wrap": "balance"
+              },
+              "blocks": {}
+            },
+            "text_PnbwX4": {
+              "type": "text",
+              "name": "Text",
+              "settings": {
+                "text": "<p>Text</p>",
+                "heading_tag": "h2",
+                "heading_preset": "custom",
+                "heading_font": "heading",
+                "heading_size": "3.5rem",
+                "heading_line_height": "tight",
+                "heading_letter_spacing": "normal",
+                "heading_case": "none",
+                "heading_wrap": "balance"
+              },
+              "blocks": {}
+            },
+            "text_gxPG3a": {
+              "type": "text",
+              "name": "Text",
+              "settings": {
+                "text": "<p>Text</p>",
+                "heading_tag": "h2",
+                "heading_preset": "custom",
                 "heading_font": "heading",
                 "heading_size": "3.5rem",
                 "heading_line_height": "tight",
@@ -194,7 +226,9 @@
           },
           "block_order": [
             "heading_GxFi4Q",
-            "text_VVEweD"
+            "text_VVEweD",
+            "text_PnbwX4",
+            "text_gxPG3a"
           ]
         }
       },
