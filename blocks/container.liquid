@@ -1,10 +1,12 @@
 {% comment %}
   blocks/container.liquid  (create in blocks/)
-  The container (Horizon's "group", renamed). A flex layout block that holds
+ A flex layout block that holds
   any other blocks. Direction (vertical/horizontal), horizontal alignment
   (left/center/right), vertical position (top/center/bottom/space-between),
   gap, width, padding, color scheme.
 {% endcomment %}
+
+
 
 {%- liquid
   assign s = block.settings
@@ -16,7 +18,6 @@
     when 'right'
       assign a_h = 'flex-end'
   endcase
-
   assign a_v = 'flex-start'
   case s.position
     when 'center'
@@ -26,7 +27,6 @@
     when 'space-between'
       assign a_v = 'space-between'
   endcase
-
   if s.direction == 'row'
     assign justify = a_h
     if s.position == 'space-between'
@@ -47,67 +47,155 @@
     else
       assign width_css = '100%'
   endcase
+  case s.mobile_width
+    when 'fit'
+      assign width_m = 'fit-content'
+    when 'custom'
+      assign width_m = s.mobile_custom_width | append: '%'
+    else
+      assign width_m = '100%'
+  endcase
+  case s.height
+    when 'fill'
+      assign height_css = '100%'
+    when 'custom'
+      assign height_css = s.custom_height | append: 'px'
+    else
+      assign height_css = 'fit-content'
+  endcase
 -%}
 
 <div
   class="container-block{% unless s.inherit_color_scheme %} color-{{ s.color_scheme }}{% endunless %}"
   style="
-    display: flex;
-    flex-direction: {{ s.direction }};
-    justify-content: {{ justify }};
-    align-items: {{ align }};
-    gap: {{ s.gap }}px;
-    width: {{ width_css }};
+    --w: {{ width_css }}; --w-m: {{ width_m }};
+    --c-dir: {{ s.direction }}; --c-justify: {{ justify }}; --c-align: {{ align }}; --c-gap: {{ s.gap }}px;
+    height: {{ height_css }};
+    border-radius: {{ s.corner_radius }}px;
+    {% if s.border_style == 'solid' %}border: {{ s.border_width }}px solid {{ s.border_color }};{% endif %}
     padding: {{ s.padding_top }}px {{ s.padding_right }}px {{ s.padding_bottom }}px {{ s.padding_left }}px;
   "
   {{ block.shopify_attributes }}
 >
-  {% content_for 'blocks' %}
+  {%- if s.bg_type == 'image' and s.bg_image != blank -%}
+    <div class="container-block__bg">{{ s.bg_image | image_url: width: 2000 | image_tag: widths: '600,1200,2000', sizes: '100vw', loading: 'lazy', alt: '' }}</div>
+  {%- elsif s.bg_type == 'video' and s.bg_video != blank -%}
+    <div class="container-block__bg">{{ s.bg_video | video_tag: loop: true, autoplay: true, muted: true, controls: false, playsinline: true }}</div>
+  {%- endif -%}
+
+  {%- if s.enable_overlay -%}
+    <div class="container-block__overlay" style="background: {{ s.overlay_color }};" aria-hidden="true"></div>
+  {%- endif -%}
+
+  {%- if s.block_link != blank -%}
+    <a class="container-block__link" href="{{ s.block_link }}" aria-label="{{ s.block_link_label | default: 'View' }}"{% if s.block_link_new_tab %} target="_blank" rel="noopener"{% endif %}></a>
+  {%- endif -%}
+
+  <div class="container-block__content">
+    {% content_for 'blocks' %}
+  </div>
 </div>
 
 {% stylesheet %}
-  .container-block { box-sizing: border-box; }
+  .container-block {
+    box-sizing: border-box;
+    position: relative;
+    width: var(--w, 100%);
+    overflow: hidden;
+  }
+  .container-block__bg { position: absolute; inset: 0; z-index: 0; }
+  .container-block__bg img, .container-block__bg video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .container-block__overlay { position: absolute; inset: 0; z-index: 1; }
+  .container-block__link { position: absolute; inset: 0; z-index: 2; }
+  .container-block__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: var(--c-dir, column);
+    justify-content: var(--c-justify, flex-start);
+    align-items: var(--c-align, flex-start);
+    gap: var(--c-gap, 15px);
+    width: 100%;
+    height: 100%;
+  }
   @media (max-width: 749px) {
-    .container-block[style*="flex-direction: row"] { flex-wrap: wrap; }
+    .container-block { width: var(--w-m, 100%); }
+    .container-block__content[style*="row"] { flex-wrap: wrap; }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "Container",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
   "settings": [
     {
       "type": "select",
       "id": "direction",
       "label": "Direction",
+      "default": "column",
       "options": [
-        { "value": "column", "label": "Vertical" },
-        { "value": "row", "label": "Horizontal" }
-      ],
-      "default": "column"
+        {
+          "value": "column",
+          "label": "Vertical"
+        },
+        {
+          "value": "row",
+          "label": "Horizontal"
+        }
+      ]
     },
     {
       "type": "select",
-      "id": "align_x",
-      "label": "Alignment X",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" },
-        { "value": "space-between", "label": "Space Between" }
-      ],
-      "default": "left"
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
     },
     {
       "type": "select",
-      "id": "align_y",
-      "label": "Alignment Y",
+      "id": "position",
+      "label": "Position",
+      "default": "top",
       "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "bottom", "label": "Bottom" }
-      ],
-      "default": "top"
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        }
+      ]
     },
     {
       "type": "range",
@@ -116,30 +204,236 @@
       "min": 0,
       "max": 80,
       "step": 1,
+      "unit": "px",
       "default": 15
     },
-
+    {
+      "type": "header",
+      "content": "Size"
+    },
     {
       "type": "select",
       "id": "width",
       "label": "Width",
+      "default": "fill",
       "options": [
-        { "value": "fit", "label": "Fit" },
-        { "value": "fill", "label": "Fill" },
-        { "value": "custom", "label": "Custom" }
-      ],
-      "default": "fill"
+        {
+          "value": "fit",
+          "label": "Fit"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
     },
-
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Custom width",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_width",
+      "label": "Mobile width",
+      "default": "fill",
+      "options": [
+        {
+          "value": "fit",
+          "label": "Fit"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "mobile_custom_width",
+      "label": "Mobile custom width",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.mobile_width == 'custom' }}"
+    },
     {
       "type": "select",
       "id": "height",
       "label": "Height",
+      "default": "fit",
       "options": [
-        { "value": "fit", "label": "Fit" },
-        { "value": "fill", "label": "Fill" }
-      ],
-      "default": "fit"
+        {
+          "value": "fit",
+          "label": "Fit"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom height",
+      "min": 50,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 400,
+      "visible_if": "{{ block.settings.height == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "Inherit color scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "select",
+      "id": "bg_type",
+      "label": "Background media",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image",
+      "visible_if": "{{ block.settings.bg_type == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "bg_video",
+      "label": "Background video",
+      "visible_if": "{{ block.settings.bg_type == 'video' }}"
+    },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.border_style == 'solid' }}"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#1a1a1a",
+      "visible_if": "{{ block.settings.border_style == 'solid' }}"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Background overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#00000040",
+      "visible_if": "{{ block.settings.enable_overlay }}"
+    },
+    {
+      "type": "header",
+      "content": "Block link"
+    },
+    {
+      "type": "paragraph",
+      "content": "Links the whole container. Buttons and links inside still work."
+    },
+    {
+      "type": "url",
+      "id": "block_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "block_link_label",
+      "label": "Link label (accessibility)",
+      "default": "View"
+    },
+    {
+      "type": "checkbox",
+      "id": "block_link_new_tab",
+      "label": "Open in new tab",
+      "default": false
     },
     {
       "type": "header",
@@ -153,7 +447,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -163,7 +457,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -173,7 +467,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -183,22 +477,13 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
-    },
+      "default": 0
+    }
   ],
-
-  "blocks": [
-    { "type": "container" },
-    { "type": "text" },
-    { "type": "heading" },
-    { "type": "image" },
-    { "type": "button" },
-    { "type": "product_card" }
-  ],
-
   "presets": [
-    { "name": "Solis Container" }
+    {
+      "name": "Container"
+    }
   ]
 }
-
 {% endschema %}
