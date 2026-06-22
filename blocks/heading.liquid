@@ -1,45 +1,48 @@
 {% comment %}
-SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
+  blocks/heading.liquid  (replace in blocks/)
+  A heading. Visual styling (preset/custom typography) is separate from the
+  semantic tag, which controls the document outline for SEO/accessibility.
 {% endcomment %}
 
+{%- liquid
+  assign s = block.settings
+  assign htag = s.heading_tag | default: 'h2'
+  assign bg = s.background
+  if s.enable_overlay
+    assign box_bg = 'linear-gradient(' | append: s.overlay_color | append: ', ' | append: s.overlay_color | append: '), ' | append: bg
+  else
+    assign box_bg = bg
+  endif
+-%}
 
 <div
   class="solis-heading"
   style="
-    text-align: {{ block.settings.alignment }};
-    {% render 'typography-style',
-      preset: block.settings.typography_preset,
-      font: block.settings.font,
-      size: block.settings.size,
-      line_height: block.settings.line_height,
-      letter_spacing: block.settings.letter_spacing,
-      text_case: block.settings.text_case,
-      wrap: block.settings.wrap
-    
-    %}
+    text-align: {{ s.alignment }};
+    background: {{ box_bg }};
+    padding: {{ s.padding_top }}px {{ s.padding_right }}px {{ s.padding_bottom }}px {{ s.padding_left }}px;
   "
   {{ block.shopify_attributes }}
 >
-  {{ block.settings.heading }}
+  <{{ htag }} class="solis-heading__text" style="margin:0; {% render 'typography-style', preset: s.heading_preset, font: s.heading_font, size: s.heading_size, line_height: s.heading_line_height, letter_spacing: s.heading_letter_spacing, text_case: s.heading_case, wrap: s.heading_wrap %}">{{ s.heading }}</{{ htag }}>
 </div>
-
 
 {% schema %}
 {
   "name": "Heading",
   "settings": [
-{
-       "type": "richtext",
+    {
+      "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
-      "default": "<h1>Your headline here<h1>"
+      "default": "Your headline here"
     },
     {
       "type": "select",
       "id": "heading_tag",
       "label": "Heading tag (SEO / accessibility)",
       "default": "h2",
-      "info": "The HTML element. Use one H1 per page; secondary headings should step down (H2, H3...).",
+      "info": "The HTML element. Use one H1 per page; secondary headings step down (H2, H3...).",
       "options": [
         {
           "value": "h1",
@@ -73,7 +76,7 @@ SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     },
     {
       "type": "header",
-      "content": "Heading typography"
+      "content": "Typography"
     },
     {
       "type": "select",
@@ -278,10 +281,53 @@ SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
         {
           "value": "none",
           "label": "None"
-          }
+        }
       ]
     },
- {
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Background overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#00000026",
+      "visible_if": "{{ block.settings.enable_overlay }}"
+    },
+    {
       "type": "header",
       "content": "Padding"
     },
@@ -293,7 +339,7 @@ SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -303,7 +349,7 @@ SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -313,7 +359,7 @@ SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -323,18 +369,13 @@ SOLIS HEADING BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
-    },
+      "default": 0
+    }
   ],
-  
   "presets": [
     {
       "name": "Heading"
     }
   ]
 }
-
-
 {% endschema %}
-
-
