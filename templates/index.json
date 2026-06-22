@@ -144,51 +144,54 @@
         "padding_bottom": 0
       }
     },
-    "marquee_xiPYmi": {
-      "type": "marquee",
+    "custom_section_TpHzYz": {
+      "type": "custom-section",
       "blocks": {
-        "item_YR9TjX": {
-          "type": "item",
+        "container_fCQFh4": {
+          "type": "container",
+          "name": "Container",
           "settings": {
-            "text": "<p>New collection just released</p>",
-            "image_width": 40,
-            "image_width_mobile": 40
-          }
-        },
-        "item_936NcH": {
-          "type": "item",
-          "settings": {
-            "text": "<p>Shop Now</p>",
-            "image_width": 40,
-            "image_width_mobile": 40
-          }
+            "direction": "row",
+            "gap": 16,
+            "width": "fill"
+          },
+          "blocks": {
+            "text_x97mpM": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "Text",
+                "text_style": "text--title",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "text_Yw7th4": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "Text",
+                "text_style": "text--title",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_x97mpM",
+            "text_Yw7th4"
+          ]
         }
       },
       "block_order": [
-        "item_YR9TjX",
-        "item_936NcH"
+        "container_fCQFh4"
       ],
-      "name": "💫 Marquee Text Banner",
-      "settings": {
-        "link_url": "",
-        "color_text": "#fff",
-        "color_bg": "#000",
-        "color_border": "#000",
-        "border_width": 0,
-        "text_size": 30,
-        "text_size_mobile": 20,
-        "item_padding": 20,
-        "direction": "normal",
-        "speed": 100,
-        "padding": 10,
-        "mobile_hide": false,
-        "css_class": "",
-        "custom_css": ""
-      }
+      "name": "t:general.custom_section",
+      "settings": {}
     }
   },
   "order": [
     "hero_dXq8DY",
-    "marquee_xiPYmi"
+    "custom_section_TpHzYz"
   ]
 }

@@ -205,3 +205,40 @@ select {
   padding: 0;
   margin: 0;
 }
+
+/* ----------------------------------------------------------
+   Containers
+   ---------------------------------------------------------- */
+.solis-container {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.solis-container--column {
+  flex-direction: column;
+}
+
+.solis-container--row {
+  flex-direction: row;
+}
+
+/* X axis */
+.solis-x--left { justify-content: flex-start; }
+.solis-x--center { justify-content: center; }
+.solis-x--right { justify-content: flex-end; }
+.solis-x--space-between { justify-content: space-between; }
+
+/* Y axis */
+.solis-y--top { align-items: flex-start; }
+.solis-y--center { align-items: center; }
+.solis-y--bottom { align-items: flex-end; }
+
+.solis-block {
+  box-sizing: border-box;
+}
+
+/* prevent child layout control */
+.solis-block * {
+  max-width: 100%;
+}
