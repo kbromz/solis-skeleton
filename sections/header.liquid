@@ -410,6 +410,40 @@
     },
     { "type": "link_list", "id": "customer_account_menu", "label": "Customer account menu", "default": "customer-account-main-menu" },
 
+    { "type": "header", "content": "Mobile and drawer" },
+    { "type": "color_scheme", "id": "drawer_color_scheme", "label": "Drawer color scheme", "default": "scheme-1" },
+    { "type": "link_list", "id": "drawer_menu", "label": "Drawer menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "force_drawer_desktop", "label": "Use drawer menu on desktop", "default": false },
+    { "type": "range", "id": "drawer_width_desktop", "label": "Desktop drawer width", "min": 25, "max": 50, "step": 1, "unit": "%", "default": 35 },
+    { "type": "checkbox", "id": "drawer_show_account", "label": "Show account / log in in drawer", "default": true },
+    { "type": "checkbox", "id": "drawer_show_social", "label": "Show social icons in drawer", "default": false },
+
+    { "type": "header", "content": "Header button" },
+    { "type": "checkbox", "id": "header_cta_enabled", "label": "Show button", "default": false },
+    { "type": "text", "id": "header_cta_label", "label": "Label", "default": "Book now" },
+    { "type": "url", "id": "header_cta_link", "label": "Link" },
+    {
+      "type": "select", "id": "header_cta_style", "label": "Style", "default": "primary",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "link", "label": "Link (underlined)" }
+      ]
+    },
+
+    { "type": "header", "content": "Search" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+
+    { "type": "header", "content": "Appearance" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    {
+      "type": "select", "id": "enable_sticky_header", "label": "Sticky header", "default": "always",
+      "options": [
+        { "value": "always", "label": "Always" },
+        { "value": "never", "label": "Never" }
+      ]
+    },
+
     { "type": "header", "content": "Menu typography" },
     {
       "type": "select", "id": "menu_font", "label": "Font", "default": "subheading",
@@ -541,39 +575,7 @@
     { "type": "text", "id": "tile_4_button_label", "label": "Button label", "default": "Shop now" },
     { "type": "url", "id": "tile_4_link", "label": "Link" },
 
-    { "type": "header", "content": "Mobile and drawer" },
-    { "type": "color_scheme", "id": "drawer_color_scheme", "label": "Drawer color scheme", "default": "scheme-1" },
-    { "type": "link_list", "id": "drawer_menu", "label": "Drawer menu", "default": "main-menu" },
-    { "type": "checkbox", "id": "force_drawer_desktop", "label": "Use drawer menu on desktop", "default": false },
-    { "type": "range", "id": "drawer_width_desktop", "label": "Desktop drawer width", "min": 25, "max": 50, "step": 1, "unit": "%", "default": 35 },
-    { "type": "checkbox", "id": "drawer_show_account", "label": "Show account / log in in drawer", "default": true },
-    { "type": "checkbox", "id": "drawer_show_social", "label": "Show social icons in drawer", "default": false },
-
-    { "type": "header", "content": "Header button" },
-    { "type": "checkbox", "id": "header_cta_enabled", "label": "Show button", "default": false },
-    { "type": "text", "id": "header_cta_label", "label": "Label", "default": "Book now" },
-    { "type": "url", "id": "header_cta_link", "label": "Link" },
-    {
-      "type": "select", "id": "header_cta_style", "label": "Style", "default": "primary",
-      "options": [
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" },
-        { "value": "link", "label": "Link (underlined)" }
-      ]
-    },
-
-    { "type": "header", "content": "Search" },
-    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
-
-    { "type": "header", "content": "Appearance" },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
-    {
-      "type": "select", "id": "enable_sticky_header", "label": "Sticky header", "default": "always",
-      "options": [
-        { "value": "always", "label": "Always" },
-        { "value": "never", "label": "Never" }
-      ]
-    },
+    
     { "type": "range", "id": "divider_width", "label": "Border thickness", "min": 0, "max": 5, "step": 0.5, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_block", "label": "Vertical padding", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 0 }
   ]
