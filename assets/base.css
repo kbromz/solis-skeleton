@@ -88,11 +88,6 @@ a:hover {
   border-radius: var(--button-secondary-radius);
 }
 
-.link {
-  display: inline-block;
-  text-align: center;
-}
-
 .button--primary:hover,
 .button--secondary:hover {
   opacity: 0.85;
@@ -100,6 +95,24 @@ a:hover {
 
 .button--pill {
   border-radius: var(--pills-radius);
+}
+
+/* Link style — your most-used: uppercase, button-size text, underlined, 8px offset */
+.button--link {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--button-primary-font);
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  color: var(--color-foreground);
+}
+
+.button--link:hover {
+  opacity: 0.7;
 }
 
 /* ----------------------------------------------------------

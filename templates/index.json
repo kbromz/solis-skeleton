@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "main": {
+      "type": "hello-world",
+      "settings": {}
+    },
     "collections_UYVzPn": {
       "type": "collections",
       "name": "t:general.collections_grid",
@@ -159,6 +163,7 @@
     }
   },
   "order": [
+    "main",
     "collections_UYVzPn",
     "custom_section_HnLEX9",
     "custom_section_8CjBQC"
