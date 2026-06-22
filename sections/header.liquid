@@ -130,13 +130,14 @@
           {%- endif -%}
         </li>
       {%- endfor -%}
+        {%- if s.header_cta_enabled and s.header_cta_label != blank -%}
+      <a href="{{ s.header_cta_link }}" class="button button--{{ s.header_cta_style }} header__drawer-cta">{{ s.header_cta_label }}</a>
+    {%- endif -%}
     </ul>
   </nav>
 
   <div class="header__drawer-footer">
-    {%- if s.header_cta_enabled and s.header_cta_label != blank -%}
-      <a href="{{ s.header_cta_link }}" class="button button--{{ s.header_cta_style }} header__drawer-cta">{{ s.header_cta_label }}</a>
-    {%- endif -%}
+ 
 
     {%- if s.drawer_show_account and shop.customer_accounts_enabled -%}
       <a href="{{ routes.account_url }}" class="header__drawer-account">
