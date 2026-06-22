@@ -17,11 +17,11 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "Shop our latest arrivals",
-            "link": "",
-            "font": "var(--font-body--family)",
+            "text": "FREE SHIPPING ON ORDERS $300+",
+            "link": "shopify://collections/all",
+            "font": "var(--font-accent--family)",
             "font_size": "1rem",
-            "weight": "",
+            "weight": "300",
             "letter_spacing": "normal",
             "case": "none"
           },
