@@ -89,6 +89,17 @@
             "padding": 0
           },
           "blocks": {
+            "button_Qz6yz6": {
+              "type": "button",
+              "name": "Button",
+              "settings": {
+                "label": "Shop now",
+                "link": "",
+                "style": "primary",
+                "full_width": false
+              },
+              "blocks": {}
+            },
             "text_BHNzkz": {
               "type": "text",
               "name": "t:general.text",
@@ -101,6 +112,7 @@
             }
           },
           "block_order": [
+            "button_Qz6yz6",
             "text_BHNzkz"
           ]
         },
