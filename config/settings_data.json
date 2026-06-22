@@ -103,7 +103,7 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
+          "background": "#F6F5F0",
           "foreground": "#000000cf",
           "button": "#1a1a1a",
           "button_label": "#ffffff",
@@ -123,7 +123,7 @@
       },
       "scheme-3": {
         "settings": {
-          "background": "#f6f5f0",
+          "background": "#FFFFFF",
           "foreground": "#000000cf",
           "button": "#1a1a1a",
           "button_label": "#ffffff",
