@@ -9,9 +9,85 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero_dXq8DY": {
+      "type": "hero",
+      "blocks": {
+        "slide_Ac9WKH": {
+          "type": "slide",
+          "settings": {
+            "media_type_1": "image",
+            "enable_split": true,
+            "media_type_2": "image",
+            "split_gap": 0,
+            "mobile_media": "first_only",
+            "content_position_desktop": "center-left",
+            "content_position_mobile": "bottom-center",
+            "eyebrow": "",
+            "heading": "Your headline here",
+            "heading_size": "3.5rem",
+            "body": "",
+            "content_max_width": 540,
+            "button_1_label": "",
+            "button_1_link": "",
+            "button_1_style": "primary",
+            "button_2_label": "",
+            "button_2_link": "",
+            "button_2_style": "link",
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000040",
+            "overlay_style": "solid",
+            "gradient_direction": "to top"
+          },
+          "blocks": {}
+        },
+        "slide_YhiT6f": {
+          "type": "slide",
+          "settings": {
+            "media_type_1": "image",
+            "enable_split": false,
+            "media_type_2": "image",
+            "split_gap": 0,
+            "mobile_media": "stack",
+            "content_position_desktop": "center-left",
+            "content_position_mobile": "bottom-center",
+            "eyebrow": "",
+            "heading": "Your headline here",
+            "heading_size": "3.5rem",
+            "body": "",
+            "content_max_width": 540,
+            "button_1_label": "",
+            "button_1_link": "",
+            "button_1_style": "primary",
+            "button_2_label": "",
+            "button_2_link": "",
+            "button_2_style": "link",
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000040",
+            "overlay_style": "solid",
+            "gradient_direction": "to top"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "slide_Ac9WKH",
+        "slide_YhiT6f"
+      ],
+      "name": "Hero",
+      "settings": {
+        "section_width": "full-width",
+        "slide_height": "large",
+        "corner_radius": 0,
+        "color_scheme": "",
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "show_progress": true,
+        "show_arrows": false
+      }
     },
     "collections_UYVzPn": {
       "type": "collections",
@@ -175,7 +251,7 @@
     }
   },
   "order": [
-    "main",
+    "hero_dXq8DY",
     "collections_UYVzPn",
     "custom_section_HnLEX9",
     "custom_section_8CjBQC"
