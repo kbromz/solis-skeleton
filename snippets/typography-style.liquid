@@ -1,0 +1,54 @@
+{% comment %}
+  snippets/typography-style.liquid  (create in snippets/)
+  The shared typography system for every section/block. Pass a text element's
+  font role + size + line-height + letter-spacing + case and it returns inline
+  CSS declarations. Keeps every section's text controls identical.
+
+  Usage:
+    <h2 style="{% render 'typography-style',
+      font: block.settings.heading_font,
+      size: block.settings.heading_size,
+      line_height: block.settings.heading_line_height,
+      letter_spacing: block.settings.heading_letter_spacing,
+      text_case: block.settings.heading_case %}">
+{% endcomment %}
+
+{%- liquid
+  assign ff = 'var(--font-' | append: font | append: '--family)'
+
+  case line_height
+    when 'tight'
+      assign lh = '1.1'
+    when 'snug'
+      assign lh = '1.25'
+    when 'relaxed'
+      assign lh = '1.6'
+    when 'loose'
+      assign lh = '1.85'
+    else
+      assign lh = '1.4'
+  endcase
+
+  case letter_spacing
+    when 'tight'
+      assign ls = '-0.02em'
+    when 'wide'
+      assign ls = '0.05em'
+    when 'wider'
+      assign ls = '0.1em'
+    when 'widest'
+      assign ls = '0.15em'
+    else
+      assign ls = '0'
+  endcase
+
+  echo 'font-family:' | append: ff | append: ';'
+  unless size == 'default' or size == blank
+    echo 'font-size:' | append: size | append: ';'
+  endunless
+  echo 'line-height:' | append: lh | append: ';'
+  echo 'letter-spacing:' | append: ls | append: ';'
+  unless text_case == blank
+    echo 'text-transform:' | append: text_case | append: ';'
+  endunless
+-%}
