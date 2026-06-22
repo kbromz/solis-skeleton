@@ -22,125 +22,262 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
   {{ block.settings.text }}
 </div>
 
-
 {% schema %}
 {
   "name": "Text",
   "settings": [
-    {
-      "type": "richtext",
-      "id": "text",
-      "label": "Text",
-      "default": "<p>Text</p>"
+{
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your headline here"
     },
-
     {
       "type": "select",
-      "id": "preset",
-      "label": "Typography preset",
-      "default": "paragraph",
+      "id": "heading_tag",
+      "label": "Heading tag (SEO / accessibility)",
+      "default": "h2",
+      "info": "The HTML element. Use one H1 per page; secondary headings should step down (H2, H3...).",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "paragraph", "label": "Paragraph" },
-        { "value": "h1", "label": "H1" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" },
-        { "value": "h4", "label": "H4" },
-        { "value": "h5", "label": "H5" },
-        { "value": "h6", "label": "H6" },
-        { "value": "custom", "label": "Custom" }
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        },
+        {
+          "value": "p",
+          "label": "Paragraph"
+        }
       ]
     },
-
+    {
+      "type": "header",
+      "content": "Heading typography"
+    },
     {
       "type": "select",
-      "id": "font",
+      "id": "heading_preset",
+      "label": "Preset",
+      "default": "h1",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "paragraph",
+          "label": "Paragraph"
+        },
+        {
+          "value": "h1",
+          "label": "Heading 1"
+        },
+        {
+          "value": "h2",
+          "label": "Heading 2"
+        },
+        {
+          "value": "h3",
+          "label": "Heading 3"
+        },
+        {
+          "value": "h4",
+          "label": "Heading 4"
+        },
+        {
+          "value": "h5",
+          "label": "Heading 5"
+        },
+        {
+          "value": "h6",
+          "label": "Heading 6"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
       "label": "Font",
-      "default": "body",
+      "default": "heading",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
       "options": [
-        { "value": "body", "label": "Body" },
-        { "value": "heading", "label": "Heading" },
-        { "value": "subheading", "label": "Subheading" },
-        { "value": "accent", "label": "Accent" }
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
       ]
     },
-
     {
       "type": "select",
-      "id": "size",
+      "id": "heading_size",
       "label": "Size",
-      "default": "1rem",
+      "default": "3.5rem",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "0.75rem", "label": "12" },
-        { "value": "0.8125rem", "label": "13" },
-        { "value": "0.875rem", "label": "14" },
-        { "value": "1rem", "label": "16" },
-        { "value": "1.125rem", "label": "18" },
-        { "value": "1.25rem", "label": "20" },
-        { "value": "1.5rem", "label": "24" },
-        { "value": "2rem", "label": "32" },
-        { "value": "2.75rem", "label": "44" },
-        { "value": "3.5rem", "label": "56" },
-        { "value": "4.5rem", "label": "72" }
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "0.75rem",
+          "label": "12"
+        },
+        {
+          "value": "0.8125rem",
+          "label": "13"
+        },
+        {
+          "value": "0.875rem",
+          "label": "14"
+        },
+        {
+          "value": "1rem",
+          "label": "16"
+        },
+        {
+          "value": "1.125rem",
+          "label": "18"
+        },
+        {
+          "value": "1.25rem",
+          "label": "20"
+        },
+        {
+          "value": "1.5rem",
+          "label": "24"
+        },
+        {
+          "value": "2rem",
+          "label": "32"
+        },
+        {
+          "value": "2.75rem",
+          "label": "44"
+        },
+        {
+          "value": "3.5rem",
+          "label": "56"
+        },
+        {
+          "value": "4.5rem",
+          "label": "72"
+        }
       ]
     },
-
     {
       "type": "select",
-      "id": "line_height",
+      "id": "heading_line_height",
       "label": "Line height",
-      "default": "normal",
+      "default": "tight",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
       "options": [
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
+        {
+          "value": "tight",
+          "label": "Tight"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "loose",
+          "label": "Loose"
+        }
       ]
     },
-
     {
       "type": "select",
-      "id": "letter_spacing",
+      "id": "heading_letter_spacing",
       "label": "Letter spacing",
       "default": "normal",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
       "options": [
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
+        {
+          "value": "tight",
+          "label": "Tight"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "loose",
+          "label": "Loose"
+        }
       ]
     },
-
     {
       "type": "select",
-      "id": "text_case",
+      "id": "heading_case",
       "label": "Case",
       "default": "none",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
       "options": [
-        { "value": "none", "label": "None" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" },
-        { "value": "capitalize", "label": "Capitalize" }
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        }
       ]
     },
-
     {
       "type": "select",
-      "id": "wrap",
+      "id": "heading_wrap",
       "label": "Wrap",
-      "default": "default",
+      "default": "balance",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "balance", "label": "Balance" },
-        { "value": "pretty", "label": "Pretty" },
-        { "value": "none", "label": "None" }
+        {
+          "value": "pretty",
+          "label": "Pretty"
+        },
+        {
+          "value": "balance",
+          "label": "Balance"
+        },
+        {
+          "value": "none",
+          "label": "None"
+          }
       ]
-    },
-
-    {
-      "type": "text_alignment",
-      "id": "alignment",
-      "label": "Alignment",
-      "default": "left"
     }
   ],
   "presets": [
@@ -149,4 +286,6 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     }
   ]
 }
+
+
 {% endschema %}
