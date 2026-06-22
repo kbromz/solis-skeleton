@@ -1,0 +1,128 @@
+{% comment %}
+  blocks/container.liquid  (create in blocks/)
+  The container (Horizon's "group", renamed). A flex layout block that holds
+  any other blocks. Direction (vertical/horizontal), horizontal alignment
+  (left/center/right), vertical position (top/center/bottom/space-between),
+  gap, width, padding, color scheme.
+{% endcomment %}
+
+{%- liquid
+  assign s = block.settings
+
+  assign a_h = 'flex-start'
+  case s.alignment
+    when 'center'
+      assign a_h = 'center'
+    when 'right'
+      assign a_h = 'flex-end'
+  endcase
+
+  assign a_v = 'flex-start'
+  case s.position
+    when 'center'
+      assign a_v = 'center'
+    when 'bottom'
+      assign a_v = 'flex-end'
+    when 'space-between'
+      assign a_v = 'space-between'
+  endcase
+
+  if s.direction == 'row'
+    assign justify = a_h
+    if s.position == 'space-between'
+      assign align = 'stretch'
+    else
+      assign align = a_v
+    endif
+  else
+    assign align = a_h
+    assign justify = a_v
+  endif
+
+  case s.width
+    when 'fit'
+      assign width_css = 'fit-content'
+    when 'custom'
+      assign width_css = s.custom_width | append: '%'
+    else
+      assign width_css = '100%'
+  endcase
+-%}
+
+<div
+  class="container-block{% unless s.inherit_color_scheme %} color-{{ s.color_scheme }}{% endunless %}"
+  style="
+    display: flex;
+    flex-direction: {{ s.direction }};
+    justify-content: {{ justify }};
+    align-items: {{ align }};
+    gap: {{ s.gap }}px;
+    width: {{ width_css }};
+    padding: {{ s.padding_top }}px {{ s.padding_right }}px {{ s.padding_bottom }}px {{ s.padding_left }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .container-block { box-sizing: border-box; }
+  @media (max-width: 749px) {
+    .container-block[style*="flex-direction: row"] { flex-wrap: wrap; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Container",
+  "tag": null,
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    {
+      "type": "select", "id": "direction", "label": "Direction", "default": "column",
+      "options": [
+        { "value": "column", "label": "Vertical" },
+        { "value": "row", "label": "Horizontal" }
+      ]
+    },
+    {
+      "type": "select", "id": "alignment", "label": "Alignment", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select", "id": "position", "label": "Position", "default": "top",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "space-between", "label": "Space between" }
+      ]
+    },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 16 },
+    {
+      "type": "select", "id": "width", "label": "Width", "default": "fill",
+      "options": [
+        { "value": "fill", "label": "Fill" },
+        { "value": "fit", "label": "Fit content" },
+        { "value": "custom", "label": "Custom" }
+      ]
+    },
+    { "type": "range", "id": "custom_width", "label": "Custom width", "min": 10, "max": 100, "step": 5, "unit": "%", "default": 50, "visible_if": "{{ block.settings.width == 'custom' }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_right", "label": "Right", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_left", "label": "Left", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
+
+    { "type": "header", "content": "Appearance" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1", "visible_if": "{{ block.settings.inherit_color_scheme == false }}" }
+  ],
+  "presets": [{ "name": "Container" }]
+}
+{% endschema %}

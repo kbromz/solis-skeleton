@@ -1,13 +1,13 @@
 {% comment %}
-  sections/hero.liquid  (create in sections/)
-  Slideshow hero with progress-bar pagination (animated fill synced to
-  autoplay, like hdskindallas.com), fade transitions, slide blocks.
-  Each slide controls its own media (split image/video), 9-point content
-  position for desktop + mobile, overlay, and content.
+  sections/hero.liquid  (replace in sections/)
+  Slideshow hero. Navigation: progress bars / arrows / dots / none.
+  Desktop + mobile height. Autoplay runs on a timer (works for every nav
+  style); progress bars visualise the timer.
 {% endcomment %}
 
 {%- liquid
   assign s = section.settings
+
   case s.slide_height
     when 'small'
       assign slide_h = '45vh'
@@ -18,6 +18,18 @@
     else
       assign slide_h = '82vh'
   endcase
+
+  case s.slide_height_mobile
+    when 'small'
+      assign slide_h_m = '50vh'
+    when 'large'
+      assign slide_h_m = '80vh'
+    when 'full'
+      assign slide_h_m = '100dvh'
+    else
+      assign slide_h_m = '65vh'
+  endcase
+
   assign multiple = false
   if section.blocks.size > 1
     assign multiple = true
@@ -27,30 +39,40 @@
 <hero-slideshow
   class="hero full-width color-{{ s.color_scheme }}{% if s.section_width == 'page-width' %} hero--page{% endif %}"
   data-autoplay="{% if s.autoplay and multiple %}true{% else %}false{% endif %}"
-  style="--slide-h: {{ slide_h }}; --hero-speed: {{ s.autoplay_speed }}s; --hero-radius: {{ s.corner_radius }}px;"
+  data-speed="{{ s.autoplay_speed }}"
+  style="--slide-h: {{ slide_h }}; --slide-h-mobile: {{ slide_h_m }}; --hero-speed: {{ s.autoplay_speed }}s; --hero-radius: {{ s.corner_radius }}px;"
 >
   <div class="hero__viewport">
     <div class="hero__slides">
       {% content_for 'blocks' %}
     </div>
 
-    {%- if multiple and s.show_arrows -%}
-      <button type="button" class="hero__arrow hero__arrow--prev" data-hero-prev aria-label="Previous slide">
-        <svg viewBox="0 0 12 20" width="12" height="20" fill="none" aria-hidden="true"><path d="M10 1 2 10l8 9" stroke="currentColor" stroke-width="1.5"/></svg>
-      </button>
-      <button type="button" class="hero__arrow hero__arrow--next" data-hero-next aria-label="Next slide">
-        <svg viewBox="0 0 12 20" width="12" height="20" fill="none" aria-hidden="true"><path d="m2 1 8 9-8 9" stroke="currentColor" stroke-width="1.5"/></svg>
-      </button>
-    {%- endif -%}
-
-    {%- if multiple and s.show_progress -%}
-      <div class="hero__progress" role="tablist" aria-label="Slides">
-        {%- for block in section.blocks -%}
-          <button type="button" class="hero__bar" data-hero-index="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}">
-            <span class="hero__bar-fill"></span>
+    {%- if multiple -%}
+      {%- case s.navigation_style -%}
+        {%- when 'arrows' -%}
+          <button type="button" class="hero__arrow hero__arrow--prev" data-hero-prev aria-label="Previous slide">
+            <svg viewBox="0 0 12 20" width="12" height="20" fill="none" aria-hidden="true"><path d="M10 1 2 10l8 9" stroke="currentColor" stroke-width="1.5"/></svg>
           </button>
-        {%- endfor -%}
-      </div>
+          <button type="button" class="hero__arrow hero__arrow--next" data-hero-next aria-label="Next slide">
+            <svg viewBox="0 0 12 20" width="12" height="20" fill="none" aria-hidden="true"><path d="m2 1 8 9-8 9" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+
+        {%- when 'dots' -%}
+          <div class="hero__indicators hero__indicators--dots" role="tablist" aria-label="Slides">
+            {%- for block in section.blocks -%}
+              <button type="button" class="hero__dot" data-hero-index="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}"></button>
+            {%- endfor -%}
+          </div>
+
+        {%- when 'progress' -%}
+          <div class="hero__indicators hero__indicators--bars" role="tablist" aria-label="Slides">
+            {%- for block in section.blocks -%}
+              <button type="button" class="hero__bar" data-hero-index="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}">
+                <span class="hero__bar-fill"></span>
+              </button>
+            {%- endfor -%}
+          </div>
+      {%- endcase -%}
     {%- endif -%}
   </div>
 </hero-slideshow>
@@ -74,67 +96,50 @@
     visibility: hidden;
     transition: opacity 0.6s ease, visibility 0.6s ease;
   }
-  .hero__slide.is-active {
-    opacity: 1;
-    visibility: visible;
-  }
+  .hero__slide.is-active { opacity: 1; visibility: visible; }
 
   /* Arrows */
   .hero__arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 3;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    background: none;
-    border: 0;
-    color: var(--color-foreground);
-    cursor: pointer;
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.75rem; height: 2.75rem;
+    background: none; border: 0; color: var(--color-foreground); cursor: pointer;
   }
   .hero__arrow--prev { left: 0.5rem; }
   .hero__arrow--next { right: 0.5rem; }
 
-  /* Progress bars */
-  .hero__progress {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    display: flex;
-    gap: 0.5rem;
-    width: min(420px, 70%);
+  /* Indicators */
+  .hero__indicators {
+    position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
+    z-index: 3; display: flex; gap: 0.4rem; align-items: center;
   }
+  /* Progress bars — slim */
   .hero__bar {
-    flex: 1 1 0;
-    height: 3px;
-    padding: 0;
-    border: 0;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--color-foreground) 30%, transparent);
-    cursor: pointer;
-    overflow: hidden;
+    width: 28px; height: 2px; padding: 0; border: 0; border-radius: 999px;
+    background: color-mix(in srgb, var(--color-foreground) 28%, transparent);
+    cursor: pointer; overflow: hidden;
   }
   .hero__bar-fill {
-    display: block;
-    height: 100%;
-    width: 0;
-    background: var(--color-foreground);
-    border-radius: inherit;
+    display: block; height: 100%; width: 0;
+    background: var(--color-foreground); border-radius: inherit;
   }
-  .hero__bar--done .hero__bar-fill { width: 100%; }
-  .hero[data-autoplay="false"] .hero__bar--active .hero__bar-fill { width: 100%; }
-  .hero[data-autoplay="true"] .hero__bar--active .hero__bar-fill {
+  .hero__bar.is-done .hero__bar-fill { width: 100%; }
+  .hero[data-autoplay="false"] .hero__bar.is-current .hero__bar-fill { width: 100%; }
+  .hero[data-autoplay="true"] .hero__bar.is-current .hero__bar-fill {
     animation: hero-fill var(--hero-speed, 6s) linear forwards;
   }
   @keyframes hero-fill { from { width: 0; } to { width: 100%; } }
 
+  /* Dots */
+  .hero__dot {
+    width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%;
+    background: color-mix(in srgb, var(--color-foreground) 28%, transparent);
+    cursor: pointer;
+  }
+  .hero__dot.is-current { background: var(--color-foreground); }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero[data-autoplay="true"] .hero__bar--active .hero__bar-fill { animation: none; width: 100%; }
+    .hero[data-autoplay="true"] .hero__bar.is-current .hero__bar-fill { animation: none; width: 100%; }
     .hero__slide { transition: none; }
   }
 {% endstylesheet %}
@@ -144,48 +149,48 @@
     customElements.define('hero-slideshow', class extends HTMLElement {
       connectedCallback() {
         this.slides = Array.from(this.querySelectorAll('.hero__slide'));
-        this.bars = Array.from(this.querySelectorAll('.hero__bar'));
+        this.dots = Array.from(this.querySelectorAll('[data-hero-index]'));
         this.index = 0;
         this.autoplay = this.dataset.autoplay === 'true';
+        this.speed = (parseFloat(this.dataset.speed) || 6) * 1000;
         if (this.slides.length < 2) { if (this.slides[0]) this.slides[0].classList.add('is-active'); return; }
 
-        this.bars.forEach((b, i) => b.addEventListener('click', () => this.goTo(i)));
+        this.dots.forEach((d, i) => d.addEventListener('click', () => this.goTo(i)));
         this.querySelectorAll('[data-hero-prev]').forEach((b) => b.addEventListener('click', () => this.goTo(this.index - 1)));
         this.querySelectorAll('[data-hero-next]').forEach((b) => b.addEventListener('click', () => this.goTo(this.index + 1)));
 
-        // Advance when the active bar finishes filling
-        this.addEventListener('animationend', (e) => {
-          if (e.animationName === 'hero-fill') this.goTo(this.index + 1);
-        });
-
-        // Pause on hover
         if (this.autoplay) {
-          this.addEventListener('mouseenter', () => this.pause(true));
-          this.addEventListener('mouseleave', () => this.pause(false));
+          this.addEventListener('mouseenter', () => this.stop());
+          this.addEventListener('mouseleave', () => this.show(this.index));
         }
         this.show(0);
       }
       show(i) {
         this.index = (i + this.slides.length) % this.slides.length;
         this.slides.forEach((sl, n) => sl.classList.toggle('is-active', n === this.index));
-        this.bars.forEach((b, n) => {
-          b.classList.toggle('hero__bar--active', n === this.index);
-          b.classList.toggle('hero__bar--done', n < this.index);
+        this.dots.forEach((d, n) => {
+          d.classList.toggle('is-current', n === this.index);
+          d.classList.toggle('is-done', n < this.index);
         });
-        if (this.autoplay) this.restartFill();
+        this.restartFill();
+        this.schedule();
       }
       restartFill() {
-        var fill = this.bars[this.index].querySelector('.hero__bar-fill');
+        var current = this.dots[this.index];
+        if (!current) return;
+        var fill = current.querySelector('.hero__bar-fill');
         if (!fill) return;
         fill.style.animation = 'none';
-        void fill.offsetWidth; // reflow to restart
+        void fill.offsetWidth;
         fill.style.animation = '';
       }
-      pause(state) {
-        var fill = this.bars[this.index] && this.bars[this.index].querySelector('.hero__bar-fill');
-        if (fill) fill.style.animationPlayState = state ? 'paused' : 'running';
+      schedule() {
+        this.stop();
+        if (this.autoplay) this.timer = setTimeout(() => this.goTo(this.index + 1), this.speed);
       }
+      stop() { if (this.timer) clearTimeout(this.timer); }
       goTo(i) { this.show(i); }
+      disconnectedCallback() { this.stop(); }
     });
   }
 </script>
@@ -199,13 +204,19 @@
   "settings": [
     {
       "type": "select", "id": "section_width", "label": "Section width", "default": "full-width",
+      "options": [ { "value": "full-width", "label": "Full" }, { "value": "page-width", "label": "Page" } ]
+    },
+    {
+      "type": "select", "id": "slide_height", "label": "Height (desktop)", "default": "large",
       "options": [
-        { "value": "full-width", "label": "Full" },
-        { "value": "page-width", "label": "Page" }
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
       ]
     },
     {
-      "type": "select", "id": "slide_height", "label": "Height", "default": "large",
+      "type": "select", "id": "slide_height_mobile", "label": "Height (mobile)", "default": "medium",
       "options": [
         { "value": "small", "label": "Small" },
         { "value": "medium", "label": "Medium" },
@@ -216,22 +227,23 @@
     { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 0 },
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
 
+    { "type": "header", "content": "Navigation" },
+    {
+      "type": "select", "id": "navigation_style", "label": "Navigation", "default": "progress",
+      "options": [
+        { "value": "progress", "label": "Progress bars" },
+        { "value": "arrows", "label": "Arrows" },
+        { "value": "dots", "label": "Dots" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+
     { "type": "header", "content": "Autoplay" },
     { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate slides", "default": true },
-    { "type": "range", "id": "autoplay_speed", "label": "Speed", "min": 3, "max": 12, "step": 1, "unit": "sec", "default": 6 },
-
-    { "type": "header", "content": "Navigation" },
-    { "type": "checkbox", "id": "show_progress", "label": "Show progress bars", "default": true },
-    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": false }
+    { "type": "range", "id": "autoplay_speed", "label": "Speed", "min": 3, "max": 12, "step": 1, "unit": "sec", "default": 6 }
   ],
   "presets": [
-    {
-      "name": "Hero",
-      "blocks": [
-        { "type": "slide" },
-        { "type": "slide" }
-      ]
-    }
+    { "name": "Hero", "blocks": [ { "type": "slide" }, { "type": "slide" } ] }
   ]
 }
 {% endschema %}
