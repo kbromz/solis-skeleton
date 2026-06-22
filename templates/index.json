@@ -159,6 +159,17 @@
             "height": "fit"
           },
           "blocks": {
+            "button_mjqKQf": {
+              "type": "button",
+              "name": "Button",
+              "settings": {
+                "label": "Shop now",
+                "link": "",
+                "style": "secondary",
+                "full_width": false
+              },
+              "blocks": {}
+            },
             "heading_GxFi4Q": {
               "type": "heading",
               "name": "Heading",
@@ -241,6 +252,7 @@
             }
           },
           "block_order": [
+            "button_mjqKQf",
             "heading_GxFi4Q",
             "text_VVEweD",
             "text_PnbwX4",
