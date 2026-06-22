@@ -1,0 +1,66 @@
+{%- comment -%}
+SOLIS CONTAINER RENDERER (recursive layout engine)
+This replaces Horizon group.liquid behavior
+{%- endcomment -%}
+
+{%- liquid
+  assign direction = container.settings.direction | default: 'column'
+  assign align_x = container.settings.align_x | default: 'left'
+  assign align_y = container.settings.align_y | default: 'top'
+  assign gap = container.settings.gap | default: 15
+
+  assign width = container.settings.width | default: 'fill'
+  assign height = container.settings.height | default: 'fit'
+-%}
+
+<div
+  class="
+    solis-container
+    solis-container--{{ direction }}
+    solis-x--{{ align_x }}
+    solis-y--{{ align_y }}
+  "
+  style="
+    gap: {{ gap }}px;
+    width: {% if width == 'fill' %}100%{% elsif width == 'fit' %}fit-content{% else %}{{ width }}{% endif %};
+    height: {% if height == 'fill' %}100%{% elsif height == 'fit' %}fit-content{% else %}{{ height }}{% endif %};
+  "
+>
+
+  {%- for block in container.blocks -%}
+    {%- case block.type -%}
+
+      {%- when 'container' -%}
+        {% render 'solis-container', container: block %}
+
+      {%- when 'text' -%}
+        <div class="solis-block solis-text">
+          {{ block.settings.text }}
+        </div>
+
+      {%- when 'heading' -%}
+        <h2 class="solis-block solis-heading">
+          {{ block.settings.text }}
+        </h2>
+
+      {%- when 'image' -%}
+        {% if block.settings.image != blank %}
+          <img
+            class="solis-block solis-image"
+            src="{{ block.settings.image | image_url: width: 2000 }}"
+            loading="lazy"
+          >
+        {% endif %}
+
+      {%- when 'button' -%}
+        <a class="solis-block solis-button" href="{{ block.settings.link }}">
+          {{ block.settings.label }}
+        </a>
+
+      {%- when 'product_card' -%}
+        {% render 'product-card', product: block.settings.product %}
+
+    {%- endcase -%}
+  {%- endfor -%}
+
+</div>
