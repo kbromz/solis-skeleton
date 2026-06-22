@@ -1,0 +1,207 @@
+/*
+ * assets/base.css  (OVERWRITE the copied Horizon base.css with this)
+ * The design layer for SOLIS on Skeleton — clean, authored against your own
+ * CSS variables. Skeleton's critical.css already handles the reset; the type
+ * scale lives in css-variables.liquid. This file covers layout, buttons,
+ * links, rich text, and utilities. Grow it as components need it.
+ */
+
+/* ----------------------------------------------------------
+   Layout — page width container + section widths
+   ---------------------------------------------------------- */
+.page-width {
+  width: 100%;
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.section {
+  position: relative;
+  width: 100%;
+}
+
+.section--page-width > .section__inner,
+.section--page-width.page-width {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.section--full-width {
+  max-width: none;
+}
+
+/* Vertical rhythm helper — sections may override via their own padding vars */
+.section-spacing {
+  padding-block: var(--section-padding-block, 0);
+}
+
+/* ----------------------------------------------------------
+   Links
+   ---------------------------------------------------------- */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+/* ----------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------- */
+.button,
+.button--primary,
+.button--secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-size: 0.9375rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.button--primary {
+  font-family: var(--button-primary-font);
+  text-transform: var(--button-primary-case);
+  background-color: var(--color-button);
+  color: var(--color-button-label);
+  border: var(--button-primary-border-width) solid var(--color-button);
+  border-radius: var(--button-primary-radius);
+}
+
+.button--secondary {
+  font-family: var(--button-secondary-font);
+  text-transform: var(--button-secondary-case);
+  background-color: transparent;
+  color: var(--color-secondary-button-label);
+  border: var(--button-secondary-border-width) solid var(--color-foreground);
+  border-radius: var(--button-secondary-radius);
+}
+
+.button--primary:hover,
+.button--secondary:hover {
+  opacity: 0.85;
+}
+
+.button--pill {
+  border-radius: var(--pills-radius);
+}
+
+/* Link style — your most-used: uppercase, button-size text, underlined, 8px offset */
+.button--link {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--button-primary-font);
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  color: var(--color-foreground);
+}
+
+.button--link:hover {
+  opacity: 0.7;
+}
+
+/* ----------------------------------------------------------
+   Rich text (product descriptions, page content, blocks)
+   ---------------------------------------------------------- */
+.rte > * + * {
+  margin-block-start: 1em;
+}
+
+.rte a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.rte ul,
+.rte ol {
+  padding-inline-start: 1.25em;
+}
+
+.rte img {
+  border-radius: var(--style-border-radius-inputs, 0);
+}
+
+/* ----------------------------------------------------------
+   Form fields (build on Skeleton's input reset in critical.css)
+   ---------------------------------------------------------- */
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border: var(--inputs-border-width, 1px) solid var(--color-foreground);
+  border-radius: var(--inputs-border-radius, 8px);
+}
+
+/* ----------------------------------------------------------
+   Media
+   ---------------------------------------------------------- */
+.media {
+  position: relative;
+  overflow: hidden;
+}
+
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ----------------------------------------------------------
+   Accessibility — focus + screen-reader-only
+   ---------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--color-foreground);
+  outline-offset: 2px;
+}
+
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ----------------------------------------------------------
+   Small utilities
+   ---------------------------------------------------------- */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.hidden { display: none !important; }
+
+.list-unstyled {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
