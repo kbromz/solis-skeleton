@@ -14,6 +14,7 @@
   {% assign sub_font = settings.type_subheading_font %}
   {% assign head_font = settings.type_heading_font %}
   {% assign accent_font = settings.type_accent_font %}
+  {% assign button_font = settings.type_button_font %}
 
   {{ body_font | font_face: font_display: 'swap' }}
   {{ body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
@@ -23,6 +24,8 @@
   {{ head_font | font_face: font_display: 'swap' }}
   {{ head_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
   {{ accent_font | font_face: font_display: 'swap' }}
+  {{ button_font | font_face: font_display: 'swap' }}
+  {{ button_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
 
   {% comment %} Custom font: @font-face for a hosted file {% endcomment %}
   {% if settings.custom_font_enabled and settings.custom_font_url != blank and settings.custom_font_name != blank %}
@@ -73,6 +76,10 @@
     --font-accent--family: {{ accent_family }};
     --font-accent--style: {{ accent_font.style }};
     --font-accent--weight: {{ accent_font.weight }};
+
+    --font-button--family: {{ button_font.family }}, {{ button_font.fallback_families }};
+    --font-button--style: {{ button_font.style }};
+    --font-button--weight: {{ button_font.weight }};
 
     /* Alias for Skeleton's base CSS */
     --font-primary--family: var(--font-body--family);
