@@ -11,22 +11,26 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Shop our latest arrivals"
+          }
+        }
+      },
+      "block_order": ["announcement_1"],
+      "settings": {}
+    },
     "header": {
       "type": "header",
-      "settings": {
-        "menu": "main-menu",
-        "customer_account_menu": "customer-account-main-menu"
-      }
-    },
-    "custom_section_fyHtkk": {
-      "type": "custom-section",
-      "disabled": true,
-      "name": "t:general.custom_section",
       "settings": {}
     }
   },
   "order": [
-    "header",
-    "custom_section_fyHtkk"
+    "announcement-bar",
+    "header"
   ]
 }

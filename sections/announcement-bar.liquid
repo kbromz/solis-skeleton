@@ -1,0 +1,168 @@
+{% comment %}
+  sections/announcement-bar.liquid  (create in sections/)
+  Same settings as SOLIS/Horizon: scroll speed, section width, color scheme,
+  divider thickness, top/bottom padding. Self-contained autoplay slider with
+  arrows (inline JS) — no announcement-bar.js, no slideshow-arrows snippet.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign multiple = false
+  if section.blocks.size > 1
+    assign multiple = true
+  endif
+-%}
+
+<aside
+  class="announcement-bar color-{{ s.color_scheme }} {% if s.section_width == 'page-width' %}announcement-bar--page{% endif %}"
+  style="--ab-pad-top: {{ s.padding_top }}px; --ab-pad-bottom: {{ s.padding_bottom }}px; --ab-divider: {{ s.divider_width }}px;"
+>
+  <announcement-bar
+    class="announcement-bar__inner"
+    {% if multiple %}autoplay="{{ s.speed }}"{% endif %}
+  >
+    {%- if multiple -%}
+      <button type="button" class="announcement-bar__arrow" data-ab-prev aria-label="Previous announcement">
+        <svg viewBox="0 0 10 16" width="10" height="16" fill="none" aria-hidden="true"><path d="M8 1 1 8l7 7" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+    {%- endif -%}
+
+    <div class="announcement-bar__slides">
+      {% content_for 'blocks' %}
+    </div>
+
+    {%- if multiple -%}
+      <button type="button" class="announcement-bar__arrow" data-ab-next aria-label="Next announcement">
+        <svg viewBox="0 0 10 16" width="10" height="16" fill="none" aria-hidden="true"><path d="m2 1 7 7-7 7" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+    {%- endif -%}
+  </announcement-bar>
+</aside>
+
+{% stylesheet %}
+  .announcement-bar {
+    padding-block: var(--ab-pad-top) var(--ab-pad-bottom);
+    border-block-end: var(--ab-divider) solid var(--color-foreground);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .announcement-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .announcement-bar--page .announcement-bar__inner {
+    max-width: var(--page-width);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  .announcement-bar__slides {
+    display: grid;
+    grid-template-areas: "stack";
+    width: 100%;
+    max-width: 680px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .announcement-bar__slide {
+    grid-area: stack;
+    margin: 0;
+    line-height: 1;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .announcement-bar__slide[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .announcement-bar__text {
+    margin: 0;
+  }
+
+  .announcement-bar__link {
+    position: absolute;
+    inset: 0;
+  }
+
+  .announcement-bar__slide { position: relative; }
+
+  .announcement-bar__arrow {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-foreground);
+    cursor: pointer;
+  }
+{% endstylesheet %}
+
+<script>
+  if (!customElements.get('announcement-bar')) {
+    customElements.define('announcement-bar', class extends HTMLElement {
+      connectedCallback() {
+        this.slides = Array.from(this.querySelectorAll('.announcement-bar__slide'));
+        this.index = 0;
+        if (this.slides.length < 2) return;
+        this.speed = (parseFloat(this.getAttribute('autoplay')) || 5) * 1000;
+        const prev = this.querySelector('[data-ab-prev]');
+        const next = this.querySelector('[data-ab-next]');
+        if (prev) prev.addEventListener('click', () => this.go(-1));
+        if (next) next.addEventListener('click', () => this.go(1));
+        this.start();
+        this.addEventListener('mouseenter', () => this.stop());
+        this.addEventListener('mouseleave', () => this.start());
+      }
+      go(dir) {
+        this.slides[this.index].setAttribute('aria-hidden', 'true');
+        this.index = (this.index + dir + this.slides.length) % this.slides.length;
+        this.slides[this.index].setAttribute('aria-hidden', 'false');
+      }
+      start() { this.stop(); this.timer = setInterval(() => this.go(1), this.speed); }
+      stop() { if (this.timer) clearInterval(this.timer); }
+      disconnectedCallback() { this.stop(); }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "blocks": [{ "type": "announcement" }],
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "range", "id": "speed", "label": "Scroll speed", "min": 2, "max": 10, "step": 1, "unit": "sec", "default": 5 },
+    { "type": "header", "content": "Appearance" },
+    {
+      "type": "select", "id": "section_width", "label": "Section width", "default": "page-width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ]
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" },
+    { "type": "range", "id": "divider_width", "label": "Divider thickness", "min": 0, "max": 5, "step": 0.5, "unit": "px", "default": 0 },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 15 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 15 }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": { "announcement_1": { "type": "announcement" } },
+      "block_order": ["announcement_1"]
+    }
+  ]
+}
+{% endschema %}
