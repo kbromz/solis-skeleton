@@ -82,7 +82,7 @@
         "tile_4_link": "",
         "drawer_color_scheme": "scheme-3",
         "drawer_menu": "main-menu",
-        "force_drawer_desktop": true,
+        "force_drawer_desktop": false,
         "drawer_width_desktop": 35,
         "drawer_show_account": true,
         "drawer_show_social": true,
