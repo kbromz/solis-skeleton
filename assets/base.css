@@ -88,6 +88,11 @@ a:hover {
   border-radius: var(--button-secondary-radius);
 }
 
+.link {
+  display: inline-block;
+  text-align: center;
+}
+
 .button--primary:hover,
 .button--secondary:hover {
   opacity: 0.85;
