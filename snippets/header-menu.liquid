@@ -1,23 +1,72 @@
 {% comment %}
-  snippets/header-menu.liquid  (create in snippets/)
-  Shared menu markup for the header (used by both the inline row and the
-  bottom bar). Typography is driven by the --menu-* and --submenu-*
-  variables set on the .header element.
-  Usage: {% render 'header-menu', menu: section.settings.menu %}
+  snippets/header-menu.liquid  (create/replace in snippets/)
+  Shared menu markup for the header (inline row + bottom bar).
+  Receives: menu (link_list), s (section.settings).
+  Items with children render a full-width mega panel: submenu columns plus
+  any promo tiles whose handle matches the top-level item.
+  Typography is driven by --menu-* / --submenu-* set on .header.
 {% endcomment %}
 
 <ul class="header__menu-list">
   {%- for link in menu.links -%}
-    <li class="header__item{% if link.links != blank %} header__item--has-submenu{% endif %}">
+    {%- assign link_handle = link.title | handleize -%}
+    <li class="header__item{% if link.links != blank %} header__item--has-mega{% endif %}">
       <a href="{{ link.url }}" class="header__link"{% if link.active or link.child_active %} aria-current="page"{% endif %}>
         {{ link.title }}
       </a>
+
       {%- if link.links != blank -%}
-        <ul class="header__submenu">
-          {%- for child in link.links -%}
-            <li><a href="{{ child.url }}" class="header__sublink">{{ child.title }}</a></li>
-          {%- endfor -%}
-        </ul>
+        <div class="header__mega">
+          <div class="header__mega-inner">
+            <div class="header__mega-cols">
+              {%- for child in link.links -%}
+                <div class="header__mega-col">
+                  <a href="{{ child.url }}" class="header__mega-heading">{{ child.title }}</a>
+                  {%- if child.links != blank -%}
+                    <ul class="header__mega-sublist">
+                      {%- for grandchild in child.links -%}
+                        <li><a href="{{ grandchild.url }}" class="header__sublink">{{ grandchild.title }}</a></li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- liquid
+              assign tile_count = 0
+              for i in (1..4)
+                assign h_key = 'tile_' | append: i | append: '_handle'
+                assign img_key = 'tile_' | append: i | append: '_image'
+                assign t_handle = s[h_key] | handleize
+                if s[img_key] != blank and t_handle == link_handle
+                  assign tile_count = tile_count | plus: 1
+                endif
+              endfor
+            -%}
+
+            {%- if tile_count > 0 -%}
+              <div class="header__mega-tiles">
+                {%- for i in (1..4) -%}
+                  {%- assign h_key = 'tile_' | append: i | append: '_handle' -%}
+                  {%- assign img_key = 'tile_' | append: i | append: '_image' -%}
+                  {%- assign title_key = 'tile_' | append: i | append: '_title' -%}
+                  {%- assign btn_key = 'tile_' | append: i | append: '_button_label' -%}
+                  {%- assign url_key = 'tile_' | append: i | append: '_link' -%}
+                  {%- assign ar_key = 'tile_' | append: i | append: '_aspect_ratio' -%}
+                  {%- assign t_handle = s[h_key] | handleize -%}
+                  {%- if s[img_key] != blank and t_handle == link_handle -%}
+                    <a href="{{ s[url_key] }}" class="header__mega-tile" style="--tile-ar: {{ s[ar_key] }};">
+                      {{ s[img_key] | image_url: width: 600 | image_tag: class: 'header__mega-tile-img', widths: '300,450,600', alt: s[title_key] }}
+                      {%- if s[title_key] != blank -%}<span class="header__mega-tile-title">{{ s[title_key] }}</span>{%- endif -%}
+                      {%- if s[btn_key] != blank -%}<span class="button button--link header__mega-tile-btn">{{ s[btn_key] }}</span>{%- endif -%}
+                    </a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
       {%- endif -%}
     </li>
   {%- endfor -%}
