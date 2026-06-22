@@ -158,9 +158,9 @@
             "width": "custom",
             "height": "fit",
             "padding_top": 160,
-            "padding_right": 48,
-            "padding_bottom": 48,
-            "padding_left": 48
+            "padding_right": 160,
+            "padding_bottom": 160,
+            "padding_left": 160
           },
           "blocks": {
             "button_mjqKQf": {
