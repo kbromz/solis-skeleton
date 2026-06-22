@@ -159,23 +159,41 @@
             "height": "fit"
           },
           "blocks": {
+            "heading_GxFi4Q": {
+              "type": "heading",
+              "name": "Heading",
+              "settings": {
+                "heading": "testing this container out",
+                "heading_tag": "h2",
+                "heading_preset": "custom",
+                "heading_font": "heading",
+                "heading_size": "3.5rem",
+                "heading_line_height": "tight",
+                "heading_letter_spacing": "normal",
+                "heading_case": "none",
+                "heading_wrap": "balance"
+              },
+              "blocks": {}
+            },
             "text_VVEweD": {
               "type": "text",
               "name": "Text",
               "settings": {
                 "text": "<p>Text</p>",
-                "typography_preset": "paragraph",
-                "alignment": "left",
-                "wrap": "default",
+                "preset": "custom",
+                "font": "body",
+                "size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
-                "size": "",
-                "text_case": "none"
+                "text_case": "none",
+                "wrap": "default",
+                "alignment": "left"
               },
               "blocks": {}
             }
           },
           "block_order": [
+            "heading_GxFi4Q",
             "text_VVEweD"
           ]
         }
