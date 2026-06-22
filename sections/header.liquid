@@ -391,6 +391,17 @@
         { "value": "right", "label": "Right" }
       ]
     },
+
+    { "type": "header", "content": "Appearance" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    {
+      "type": "select", "id": "enable_sticky_header", "label": "Sticky header", "default": "always",
+      "options": [
+        { "value": "always", "label": "Always" },
+        { "value": "never", "label": "Never" }
+      ]
+    },
+
     { "type": "header", "content": "Menu" },
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
     {
@@ -433,16 +444,6 @@
 
     { "type": "header", "content": "Search" },
     { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
-
-    { "type": "header", "content": "Appearance" },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
-    {
-      "type": "select", "id": "enable_sticky_header", "label": "Sticky header", "default": "always",
-      "options": [
-        { "value": "always", "label": "Always" },
-        { "value": "never", "label": "Never" }
-      ]
-    },
 
     { "type": "header", "content": "Menu typography" },
     {
