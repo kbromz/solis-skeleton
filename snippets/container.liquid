@@ -39,9 +39,9 @@ This replaces Horizon group.liquid behavior
         </div>
 
       {%- when 'heading' -%}
-        <h1 class="solis-block solis-heading">
+        <div class="solis-block solis-heading">
           {{ block.settings.text }}
-        </h1>
+        </div>
 
       {%- when 'image' -%}
         {% if block.settings.image != blank %}
