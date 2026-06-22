@@ -75,54 +75,85 @@
 {% schema %}
 {
   "name": "Container",
-  "tag": null,
-  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
   "settings": [
     {
-      "type": "select", "id": "direction", "label": "Direction", "default": "column",
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
       "options": [
         { "value": "column", "label": "Vertical" },
         { "value": "row", "label": "Horizontal" }
-      ]
+      ],
+      "default": "column"
     },
     {
-      "type": "select", "id": "alignment", "label": "Alignment", "default": "left",
+      "type": "select",
+      "id": "align_x",
+      "label": "Alignment X",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
+        { "value": "right", "label": "Right" },
+        { "value": "space-between", "label": "Space Between" }
+      ],
+      "default": "left"
     },
     {
-      "type": "select", "id": "position", "label": "Position", "default": "top",
+      "type": "select",
+      "id": "align_y",
+      "label": "Alignment Y",
       "options": [
         { "value": "top", "label": "Top" },
         { "value": "center", "label": "Center" },
-        { "value": "bottom", "label": "Bottom" },
-        { "value": "space-between", "label": "Space between" }
-      ]
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "top"
     },
-    { "type": "range", "id": "gap", "label": "Gap", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 16 },
     {
-      "type": "select", "id": "width", "label": "Width", "default": "fill",
-      "options": [
-        { "value": "fill", "label": "Fill" },
-        { "value": "fit", "label": "Fit content" },
-        { "value": "custom", "label": "Custom" }
-      ]
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 15
     },
-    { "type": "range", "id": "custom_width", "label": "Custom width", "min": 10, "max": 100, "step": 5, "unit": "%", "default": 50, "visible_if": "{{ block.settings.width == 'custom' }}" },
 
-    { "type": "header", "content": "Padding" },
-    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
-    { "type": "range", "id": "padding_right", "label": "Right", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
-    { "type": "range", "id": "padding_left", "label": "Left", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 0 },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "value": "fit", "label": "Fit" },
+        { "value": "fill", "label": "Fill" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "fill"
+    },
 
-    { "type": "header", "content": "Appearance" },
-    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme", "default": true },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1", "visible_if": "{{ block.settings.inherit_color_scheme == false }}" }
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "fit", "label": "Fit" },
+        { "value": "fill", "label": "Fill" }
+      ],
+      "default": "fit"
+    }
   ],
-  "presets": [{ "name": "Container" }]
+  "blocks": [
+    { "type": "container" },
+    { "type": "text" },
+    { "type": "heading" },
+    { "type": "image" },
+    { "type": "button" },
+    { "type": "product_card" }
+  ],
+
+  "presets": [
+    { "name": "Solis Container" }
+  ]
 }
+
 {% endschema %}
