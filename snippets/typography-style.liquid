@@ -1,54 +1,63 @@
 {% comment %}
-  snippets/typography-style.liquid  (create in snippets/)
-  The shared typography system for every section/block. Pass a text element's
-  font role + size + line-height + letter-spacing + case and it returns inline
-  CSS declarations. Keeps every section's text controls identical.
+  snippets/typography-style.liquid  (replace in snippets/)
+  Returns inline CSS for a text element.
+  - preset = default     -> inherit (no overrides)
+  - preset = paragraph   -> theme paragraph styles
+  - preset = h1..h6      -> theme heading preset (Settings > Typography)
+  - preset = custom      -> manual font/size/line-height/letter-spacing/case/wrap
 
-  Usage:
-    <h2 style="{% render 'typography-style',
-      font: block.settings.heading_font,
-      size: block.settings.heading_size,
-      line_height: block.settings.heading_line_height,
-      letter_spacing: block.settings.heading_letter_spacing,
-      text_case: block.settings.heading_case %}">
+  Visual styling is separate from the semantic HTML tag (set elsewhere), so an
+  element can read as <h2> for accessibility while looking like an h1.
 {% endcomment %}
 
 {%- liquid
-  assign ff = 'var(--font-' | append: font | append: '--family)'
-
-  case line_height
-    when 'tight'
-      assign lh = '1.1'
-    when 'snug'
-      assign lh = '1.25'
-    when 'relaxed'
-      assign lh = '1.6'
-    when 'loose'
-      assign lh = '1.85'
-    else
-      assign lh = '1.4'
+  case preset
+    when 'paragraph'
+      echo 'font-family:var(--font-body--family);'
+      echo 'font-size:var(--paragraph-size);'
+      echo 'line-height:var(--paragraph-line-height);'
+      echo 'letter-spacing:var(--paragraph-letter-spacing);'
+      echo 'text-transform:var(--paragraph-case);'
+    when 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+      echo 'font-family:var(--' | append: preset | append: '-font-family);'
+      echo 'font-size:var(--' | append: preset | append: '-size);'
+      echo 'line-height:var(--' | append: preset | append: '-line-height);'
+      echo 'letter-spacing:var(--' | append: preset | append: '-letter-spacing);'
+      echo 'text-transform:var(--' | append: preset | append: '-case);'
+    when 'custom'
+      assign ff = 'var(--font-' | append: font | append: '--family)'
+      case line_height
+        when 'tight'
+          assign lh = '1.1'
+        when 'loose'
+          assign lh = '1.8'
+        else
+          assign lh = '1.4'
+      endcase
+      case letter_spacing
+        when 'tight'
+          assign ls = '-0.02em'
+        when 'loose'
+          assign ls = '0.1em'
+        else
+          assign ls = '0'
+      endcase
+      echo 'font-family:' | append: ff | append: ';'
+      unless size == 'default' or size == blank
+        echo 'font-size:' | append: size | append: ';'
+      endunless
+      echo 'line-height:' | append: lh | append: ';'
+      echo 'letter-spacing:' | append: ls | append: ';'
+      unless text_case == blank or text_case == 'none'
+        echo 'text-transform:' | append: text_case | append: ';'
+      endunless
+      case wrap
+        when 'balance'
+          echo 'text-wrap:balance;'
+        when 'pretty'
+          echo 'text-wrap:pretty;'
+        when 'none'
+          echo 'text-wrap:nowrap;'
+      endcase
   endcase
-
-  case letter_spacing
-    when 'tight'
-      assign ls = '-0.02em'
-    when 'wide'
-      assign ls = '0.05em'
-    when 'wider'
-      assign ls = '0.1em'
-    when 'widest'
-      assign ls = '0.15em'
-    else
-      assign ls = '0'
-  endcase
-
-  echo 'font-family:' | append: ff | append: ';'
-  unless size == 'default' or size == blank
-    echo 'font-size:' | append: size | append: ';'
-  endunless
-  echo 'line-height:' | append: lh | append: ';'
-  echo 'letter-spacing:' | append: ls | append: ';'
-  unless text_case == blank
-    echo 'text-transform:' | append: text_case | append: ';'
-  endunless
 -%}
