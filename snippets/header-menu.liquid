@@ -1,0 +1,24 @@
+{% comment %}
+  snippets/header-menu.liquid  (create in snippets/)
+  Shared menu markup for the header (used by both the inline row and the
+  bottom bar). Typography is driven by the --menu-* and --submenu-*
+  variables set on the .header element.
+  Usage: {% render 'header-menu', menu: section.settings.menu %}
+{% endcomment %}
+
+<ul class="header__menu-list">
+  {%- for link in menu.links -%}
+    <li class="header__item{% if link.links != blank %} header__item--has-submenu{% endif %}">
+      <a href="{{ link.url }}" class="header__link"{% if link.active or link.child_active %} aria-current="page"{% endif %}>
+        {{ link.title }}
+      </a>
+      {%- if link.links != blank -%}
+        <ul class="header__submenu">
+          {%- for child in link.links -%}
+            <li><a href="{{ child.url }}" class="header__sublink">{{ child.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>
