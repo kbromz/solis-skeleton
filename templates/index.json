@@ -152,34 +152,31 @@
           "name": "Container",
           "settings": {
             "direction": "row",
+            "align_x": "left",
+            "align_y": "top",
             "gap": 16,
-            "width": "fill"
+            "width": "fill",
+            "height": "fit"
           },
           "blocks": {
-            "text_x97mpM": {
+            "text_VVEweD": {
               "type": "text",
-              "name": "t:general.text",
+              "name": "Text",
               "settings": {
-                "text": "Text",
-                "text_style": "text--title",
-                "alignment": "left"
-              },
-              "blocks": {}
-            },
-            "text_Yw7th4": {
-              "type": "text",
-              "name": "t:general.text",
-              "settings": {
-                "text": "Text",
-                "text_style": "text--title",
-                "alignment": "left"
+                "text": "<p>Text</p>",
+                "typography_preset": "paragraph",
+                "alignment": "left",
+                "wrap": "default",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "size": "",
+                "text_case": "none"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_x97mpM",
-            "text_Yw7th4"
+            "text_VVEweD"
           ]
         }
       },
