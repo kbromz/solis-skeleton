@@ -1,85 +1,52 @@
 {% comment %}
-SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
+  blocks/text.liquid  (replace in blocks/)
+  Rich text with full typography + appearance. Rich text carries its own
+  semantic tags, so there is no tag selector here (use the Heading block for
+  semantic headings).
 {% endcomment %}
 
+{%- liquid
+  assign s = block.settings
+  assign bg = s.background
+  if s.enable_overlay
+    assign box_bg = 'linear-gradient(' | append: s.overlay_color | append: ', ' | append: s.overlay_color | append: '), ' | append: bg
+  else
+    assign box_bg = bg
+  endif
+-%}
 
 <div
-  class="solis-text"
+  class="solis-text rte"
   style="
-    text-align: {{ block.settings.alignment }};
-    {% render 'typography-style',
-      preset: block.settings.typography_preset,
-      font: block.settings.font,
-      size: block.settings.size,
-      line_height: block.settings.line_height,
-      letter_spacing: block.settings.letter_spacing,
-      text_case: block.settings.text_case,
-      wrap: block.settings.wrap
-  
-    %}
+    text-align: {{ s.alignment }};
+    background: {{ box_bg }};
+    padding: {{ s.padding_top }}px {{ s.padding_right }}px {{ s.padding_bottom }}px {{ s.padding_left }}px;
+    {% render 'typography-style', preset: s.text_preset, font: s.text_font, size: s.text_size, line_height: s.text_line_height, letter_spacing: s.text_letter_spacing, text_case: s.text_case, wrap: s.text_wrap %}
   "
   {{ block.shopify_attributes }}
 >
-  {{ block.settings.text }}
+  {{ s.text }}
 </div>
-
 
 {% schema %}
 {
   "name": "Text",
   "settings": [
-{
+    {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Text</p>"
-    },
-    {
-      "type": "select",
-      "id": "heading_tag",
-      "label": "Heading tag (SEO / accessibility)",
-      "default": "h2",
-      "info": "The HTML element. Use one H1 per page; secondary headings should step down (H2, H3...).",
-      "options": [
-        {
-          "value": "h1",
-          "label": "H1"
-        },
-        {
-          "value": "h2",
-          "label": "H2"
-        },
-        {
-          "value": "h3",
-          "label": "H3"
-        },
-        {
-          "value": "h4",
-          "label": "H4"
-        },
-        {
-          "value": "h5",
-          "label": "H5"
-        },
-        {
-          "value": "h6",
-          "label": "H6"
-        },
-        {
-          "value": "p",
-          "label": "Paragraph"
-        }
-      ]
+      "default": "<p>Add your text here.</p>"
     },
     {
       "type": "header",
-      "content": "Heading typography"
+      "content": "Typography"
     },
     {
       "type": "select",
-      "id": "heading_preset",
+      "id": "text_preset",
       "label": "Preset",
-      "default": "h1",
+      "default": "paragraph",
       "options": [
         {
           "value": "default",
@@ -121,10 +88,10 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     },
     {
       "type": "select",
-      "id": "heading_font",
+      "id": "text_font",
       "label": "Font",
-      "default": "heading",
-      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
+      "default": "body",
+      "visible_if": "{{ block.settings.text_preset == 'custom' }}",
       "options": [
         {
           "value": "body",
@@ -146,10 +113,10 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     },
     {
       "type": "select",
-      "id": "heading_size",
+      "id": "text_size",
       "label": "Size",
-      "default": "3.5rem",
-      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
+      "default": "1rem",
+      "visible_if": "{{ block.settings.text_preset == 'custom' }}",
       "options": [
         {
           "value": "default",
@@ -203,10 +170,10 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     },
     {
       "type": "select",
-      "id": "heading_line_height",
+      "id": "text_line_height",
       "label": "Line height",
-      "default": "tight",
-      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
+      "default": "normal",
+      "visible_if": "{{ block.settings.text_preset == 'custom' }}",
       "options": [
         {
           "value": "tight",
@@ -224,10 +191,10 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     },
     {
       "type": "select",
-      "id": "heading_letter_spacing",
+      "id": "text_letter_spacing",
       "label": "Letter spacing",
       "default": "normal",
-      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
+      "visible_if": "{{ block.settings.text_preset == 'custom' }}",
       "options": [
         {
           "value": "tight",
@@ -245,10 +212,10 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
     },
     {
       "type": "select",
-      "id": "heading_case",
+      "id": "text_case",
       "label": "Case",
       "default": "none",
-      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
+      "visible_if": "{{ block.settings.text_preset == 'custom' }}",
       "options": [
         {
           "value": "none",
@@ -260,12 +227,12 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
         }
       ]
     },
-   {
+    {
       "type": "select",
-      "id": "heading_wrap",
+      "id": "text_wrap",
       "label": "Wrap",
-      "default": "balance",
-      "visible_if": "{{ block.settings.heading_preset == 'custom' }}",
+      "default": "pretty",
+      "visible_if": "{{ block.settings.text_preset == 'custom' }}",
       "options": [
         {
           "value": "pretty",
@@ -278,10 +245,53 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
         {
           "value": "none",
           "label": "None"
-          }
+        }
       ]
     },
- {
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Background overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#00000026",
+      "visible_if": "{{ block.settings.enable_overlay }}"
+    },
+    {
       "type": "header",
       "content": "Padding"
     },
@@ -293,7 +303,7 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -303,7 +313,7 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -313,7 +323,7 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 0
     },
     {
       "type": "range",
@@ -323,18 +333,13 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 48
-    },
+      "default": 0
+    }
   ],
-  
   "presets": [
     {
-      "name": "text"
+      "name": "Text"
     }
   ]
 }
-
-
 {% endschema %}
-
-
