@@ -13,6 +13,7 @@
   assign menu = s.menu
   assign logo_image = s.logo | default: settings.logo
   assign logo_inverse = s.logo_inverse | default: settings.logo_inverse
+  assign drawer_menu = s.drawer_menu | default: menu
 
   case s.menu_position
     when 'center'
@@ -47,7 +48,7 @@
   <div class="header__inner page-width">
     {%- if s.menu_row == 'top' -%}
       <nav class="header__menu" aria-label="Primary">
-        {%- render 'header-menu', menu: menu -%}
+        {%- render 'header-menu', menu: menu, s: s -%}
       </nav>
     {%- endif -%}
 
@@ -95,14 +96,14 @@
   {%- if s.menu_row == 'bottom' -%}
     <div class="header__bottom">
       <nav class="header__menu page-width" aria-label="Primary">
-        {%- render 'header-menu', menu: menu -%}
+        {%- render 'header-menu', menu: menu, s: s -%}
       </nav>
     </div>
   {%- endif -%}
 </header>
 
 <dialog
-  class="header__drawer{% if s.force_drawer_desktop %} header__drawer--desktop{% endif %}"
+  class="header__drawer color-{{ s.drawer_color_scheme }}{% if s.force_drawer_desktop %} header__drawer--desktop{% endif %}"
   scroll-lock
   style="--drawer-w-desktop: {{ s.drawer_width_desktop }}%;"
 >
@@ -113,7 +114,7 @@
   </div>
   <nav class="header__drawer-nav" aria-label="Mobile">
     <ul class="header__drawer-list">
-      {%- for link in menu.links -%}
+      {%- for link in drawer_menu.links -%}
         <li>
           {%- if link.links != blank -%}
             <details>
@@ -152,6 +153,7 @@
 
 {% stylesheet %}
   .header {
+    position: relative;
     background-color: var(--color-background);
     color: var(--color-foreground);
     border-block-end: var(--header-divider, 0) solid var(--color-foreground);
@@ -247,6 +249,51 @@
     text-transform: var(--submenu-case);
     white-space: nowrap;
   }
+
+  /* Mega menu */
+  .header__item--has-mega { position: static; }
+  .header__mega {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    border-block-start: 1px solid var(--color-foreground);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.25rem);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    z-index: 40;
+  }
+  .header__item--has-mega:hover .header__mega,
+  .header__item--has-mega:focus-within .header__mega {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .header__mega-inner {
+    max-width: var(--page-width);
+    margin-inline: auto;
+    padding: 2rem var(--page-margin);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: start;
+  }
+  .header__mega-cols { display: flex; flex-wrap: wrap; gap: 3rem; }
+  .header__mega-col { display: grid; gap: 0.75rem; align-content: start; }
+  .header__mega-heading {
+    font-family: var(--submenu-font);
+    text-transform: var(--submenu-case);
+    letter-spacing: var(--submenu-spacing);
+  }
+  .header__mega-sublist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+  .header__mega-tiles { display: flex; gap: 1rem; }
+  .header__mega-tile { display: grid; gap: 0.5rem; width: 180px; color: var(--color-foreground); }
+  .header__mega-tile-img { width: 100%; aspect-ratio: var(--tile-ar, 3 / 4); object-fit: cover; border-radius: var(--popover-radius, 8px); }
+  .header__mega-tile-title { font-family: var(--submenu-font); font-size: 0.9375rem; }
+  .header__mega-tile-btn { justify-self: start; }
 
   /* Actions */
   .header__actions { display: flex; align-items: center; gap: 1rem; }
@@ -462,7 +509,40 @@
       ]
     },
 
+    { "type": "header", "content": "Mega menu tiles" },
+    { "type": "paragraph", "content": "Tiles appear inside a menu item\u0027s mega panel. Set the handle to match the top-level menu item, e.g. shop." },
+    { "type": "header", "content": "Tile 1" },
+    { "type": "text", "id": "tile_1_handle", "label": "Menu item handle" },
+    { "type": "image_picker", "id": "tile_1_image", "label": "Image" },
+    { "type": "select", "id": "tile_1_aspect_ratio", "label": "Aspect ratio", "default": "3 / 4", "options": [ { "value": "3 / 4", "label": "3:4" }, { "value": "1 / 1", "label": "1:1" }, { "value": "4 / 5", "label": "4:5" }, { "value": "16 / 9", "label": "16:9" } ] },
+    { "type": "text", "id": "tile_1_title", "label": "Title" },
+    { "type": "text", "id": "tile_1_button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "tile_1_link", "label": "Link" },
+    { "type": "header", "content": "Tile 2" },
+    { "type": "text", "id": "tile_2_handle", "label": "Menu item handle" },
+    { "type": "image_picker", "id": "tile_2_image", "label": "Image" },
+    { "type": "select", "id": "tile_2_aspect_ratio", "label": "Aspect ratio", "default": "3 / 4", "options": [ { "value": "3 / 4", "label": "3:4" }, { "value": "1 / 1", "label": "1:1" }, { "value": "4 / 5", "label": "4:5" }, { "value": "16 / 9", "label": "16:9" } ] },
+    { "type": "text", "id": "tile_2_title", "label": "Title" },
+    { "type": "text", "id": "tile_2_button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "tile_2_link", "label": "Link" },
+    { "type": "header", "content": "Tile 3" },
+    { "type": "text", "id": "tile_3_handle", "label": "Menu item handle" },
+    { "type": "image_picker", "id": "tile_3_image", "label": "Image" },
+    { "type": "select", "id": "tile_3_aspect_ratio", "label": "Aspect ratio", "default": "3 / 4", "options": [ { "value": "3 / 4", "label": "3:4" }, { "value": "1 / 1", "label": "1:1" }, { "value": "4 / 5", "label": "4:5" }, { "value": "16 / 9", "label": "16:9" } ] },
+    { "type": "text", "id": "tile_3_title", "label": "Title" },
+    { "type": "text", "id": "tile_3_button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "tile_3_link", "label": "Link" },
+    { "type": "header", "content": "Tile 4" },
+    { "type": "text", "id": "tile_4_handle", "label": "Menu item handle" },
+    { "type": "image_picker", "id": "tile_4_image", "label": "Image" },
+    { "type": "select", "id": "tile_4_aspect_ratio", "label": "Aspect ratio", "default": "3 / 4", "options": [ { "value": "3 / 4", "label": "3:4" }, { "value": "1 / 1", "label": "1:1" }, { "value": "4 / 5", "label": "4:5" }, { "value": "16 / 9", "label": "16:9" } ] },
+    { "type": "text", "id": "tile_4_title", "label": "Title" },
+    { "type": "text", "id": "tile_4_button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "tile_4_link", "label": "Link" },
+
     { "type": "header", "content": "Mobile and drawer" },
+    { "type": "color_scheme", "id": "drawer_color_scheme", "label": "Drawer color scheme", "default": "scheme-1" },
+    { "type": "link_list", "id": "drawer_menu", "label": "Drawer menu", "default": "main-menu" },
     { "type": "checkbox", "id": "force_drawer_desktop", "label": "Use drawer menu on desktop", "default": false },
     { "type": "range", "id": "drawer_width_desktop", "label": "Desktop drawer width", "min": 25, "max": 50, "step": 1, "unit": "%", "default": 35 },
     { "type": "checkbox", "id": "drawer_show_account", "label": "Show account / log in in drawer", "default": true },
