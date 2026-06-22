@@ -43,8 +43,20 @@
     "header": {
       "type": "header",
       "settings": {
+        "logo_width": 120,
+        "logo_width_mobile": 90,
+        "logo_position": "center",
         "menu": "main-menu",
-        "customer_account_menu": "customer-account-main-menu"
+        "customer_account_menu": "customer-account-main-menu",
+        "header_cta_enabled": true,
+        "header_cta_label": "Book now",
+        "header_cta_link": "",
+        "header_cta_style": "primary",
+        "show_search": true,
+        "color_scheme": "",
+        "enable_sticky_header": "always",
+        "divider_width": 0,
+        "padding_block": 0
       }
     }
   },
