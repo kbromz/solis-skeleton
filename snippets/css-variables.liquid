@@ -1,14 +1,15 @@
 {% comment %}
   snippets/css-variables.liquid  (REPLACE Skeleton's existing file with this)
-  Wires the SOLIS theme settings into :root CSS variables.
-  Variable names match what your ported SOLIS components already reference
-  (e.g. --font-body--family, --color-foreground), so components connect with
-  minimal edits. --font-primary--family is kept as an alias so Skeleton's own
-  base styles keep working.
+  Wires SOLIS theme settings into :root CSS variables. Variable names match
+  what your ported SOLIS components read (--font-body--family, --color-foreground).
+  --font-primary--family is aliased so Skeleton's base styles keep working.
+
+  Custom fonts: if enabled, your custom family is prepended to the chosen role,
+  with the Shopify-library font kept as fallback. A hosted file loads via
+  @font-face here; an external stylesheet loads via a <link> in theme.liquid.
 {% endcomment %}
 
 {% style %}
-  {% # Load all four font roles with bold + italic variants, display: swap %}
   {% assign body_font = settings.type_body_font %}
   {% assign sub_font = settings.type_subheading_font %}
   {% assign head_font = settings.type_heading_font %}
@@ -23,25 +24,57 @@
   {{ head_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
   {{ accent_font | font_face: font_display: 'swap' }}
 
+  {% comment %} Custom font: @font-face for a hosted file {% endcomment %}
+  {% if settings.custom_font_enabled and settings.custom_font_url != blank and settings.custom_font_name != blank %}
+    @font-face {
+      font-family: "{{ settings.custom_font_name }}";
+      src: url("{{ settings.custom_font_url }}") format("{{ settings.custom_font_format }}");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+  {% endif %}
+
+  {% comment %} Build role families (strings), then optionally prepend the custom font {% endcomment %}
+  {% assign body_family = body_font.family | append: ', ' | append: body_font.fallback_families %}
+  {% assign sub_family = sub_font.family | append: ', ' | append: sub_font.fallback_families %}
+  {% assign head_family = head_font.family | append: ', ' | append: head_font.fallback_families %}
+  {% assign accent_family = accent_font.family | append: ', ' | append: accent_font.fallback_families %}
+
+  {% if settings.custom_font_enabled and settings.custom_font_name != blank %}
+    {% assign cf = '"' | append: settings.custom_font_name | append: '", ' %}
+    {% assign target = settings.custom_font_apply_to %}
+    {% if target == 'body' or target == 'both' %}
+      {% assign body_family = cf | append: body_family %}
+    {% endif %}
+    {% if target == 'headings' or target == 'both' %}
+      {% assign head_family = cf | append: head_family %}
+      {% assign sub_family = cf | append: sub_family %}
+    {% endif %}
+    {% if target == 'accent' %}
+      {% assign accent_family = cf | append: accent_family %}
+    {% endif %}
+  {% endif %}
+
   :root {
     /* Font families */
-    --font-body--family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body--family: {{ body_family }};
     --font-body--style: {{ body_font.style }};
     --font-body--weight: {{ body_font.weight }};
 
-    --font-subheading--family: {{ sub_font.family }}, {{ sub_font.fallback_families }};
+    --font-subheading--family: {{ sub_family }};
     --font-subheading--style: {{ sub_font.style }};
     --font-subheading--weight: {{ sub_font.weight }};
 
-    --font-heading--family: {{ head_font.family }}, {{ head_font.fallback_families }};
+    --font-heading--family: {{ head_family }};
     --font-heading--style: {{ head_font.style }};
     --font-heading--weight: {{ head_font.weight }};
 
-    --font-accent--family: {{ accent_font.family }}, {{ accent_font.fallback_families }};
+    --font-accent--family: {{ accent_family }};
     --font-accent--style: {{ accent_font.style }};
     --font-accent--weight: {{ accent_font.weight }};
 
-    /* Alias so Skeleton's base CSS (which uses --font-primary--family) keeps working */
+    /* Alias for Skeleton's base CSS */
     --font-primary--family: var(--font-body--family);
     --font-primary--style: var(--font-body--style);
     --font-primary--weight: var(--font-body--weight);
@@ -52,7 +85,7 @@
     --paragraph-letter-spacing: {{ settings.type_letter_spacing_paragraph }};
     --paragraph-case: {{ settings.type_case_paragraph }};
 
-    /* Heading type scale (font role value matches the family var suffix) */
+    /* Heading type scale (role value matches the family var suffix) */
     --h1-font-family: var(--font-{{ settings.type_font_h1 }}--family);
     --h1-size: {{ settings.type_size_h1 }};
     --h1-line-height: {{ settings.type_line_height_h1 }};
@@ -108,7 +141,7 @@
     --button-secondary-case: {{ settings.button_text_case_secondary }};
     --pills-radius: {{ settings.pills_border_radius }}px;
 
-    /* Inputs (alias keeps Skeleton's base styles working) */
+    /* Inputs */
     --inputs-border-width: {{ settings.input_border_width }}px;
     --inputs-border-radius: {{ settings.inputs_border_radius }}px;
     --style-border-radius-inputs: {{ settings.inputs_border_radius }}px;
@@ -141,7 +174,6 @@
     --predictive-card-radius: {{ settings.card_corner_radius }}px;
   }
 
-  /* Apply the type scale */
   body {
     font-family: var(--font-body--family);
     font-style: var(--font-body--style);

@@ -974,6 +974,95 @@
     ]
   },
   {
+    "name": "Custom fonts",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Use a font outside Shopify's library. Provide your own hosted font file (woff2) or an external stylesheet (e.g. Adobe Fonts). Make sure you hold a license to use the font on this store."
+      },
+      {
+        "type": "checkbox",
+        "id": "custom_font_enabled",
+        "label": "Enable custom font",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "custom_font_name",
+        "label": "Font family name",
+        "info": "The exact family name, e.g. Le Havre Rounded"
+      },
+      {
+        "type": "select",
+        "id": "custom_font_apply_to",
+        "label": "Apply to",
+        "default": "headings",
+        "options": [
+          {
+            "value": "headings",
+            "label": "Headings"
+          },
+          {
+            "value": "body",
+            "label": "Body"
+          },
+          {
+            "value": "both",
+            "label": "Headings and body"
+          },
+          {
+            "value": "accent",
+            "label": "Accent"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Option A \u2014 Hosted font file"
+      },
+      {
+        "type": "text",
+        "id": "custom_font_url",
+        "label": "Font file URL (woff2)",
+        "info": "Direct link to a .woff2 file. Self-host by uploading to Assets and pasting its URL, or use an external host."
+      },
+      {
+        "type": "select",
+        "id": "custom_font_format",
+        "label": "Format",
+        "default": "woff2",
+        "options": [
+          {
+            "value": "woff2",
+            "label": "woff2"
+          },
+          {
+            "value": "woff",
+            "label": "woff"
+          },
+          {
+            "value": "truetype",
+            "label": "truetype (ttf)"
+          },
+          {
+            "value": "opentype",
+            "label": "opentype (otf)"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Option B \u2014 External stylesheet"
+      },
+      {
+        "type": "text",
+        "id": "custom_font_stylesheet_url",
+        "label": "Stylesheet URL",
+        "info": "For Adobe Fonts / Google Fonts CSS links. The page loads this stylesheet; set the family name above to match."
+      }
+    ]
+  },
+  {
     "name": "Page layout",
     "settings": [
       {
