@@ -4,6 +4,7 @@ This replaces Horizon group.liquid behavior
 {%- endcomment -%}
 
 {%- liquid
+  assign s = block.settings
   assign direction = container.settings.direction | default: 'column'
   assign align_x = container.settings.align_x | default: 'left'
   assign align_y = container.settings.align_y | default: 'top'
