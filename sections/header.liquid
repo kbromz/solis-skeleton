@@ -25,7 +25,7 @@
 -%}
 
 <header
-  class="header full-width color-{{ s.color_scheme }} header--logo-{{ s.logo_position }} header--menu-{{ s.menu_row }}{% if s.enable_sticky_header == 'always' %} header--sticky{% endif %}"
+  class="header full-width color-{{ s.color_scheme }} header--logo-{{ s.logo_position }} header--menu-{{ s.menu_row }}{% if s.force_drawer_desktop %} header--force-drawer{% endif %}{% if s.enable_sticky_header == 'always' %} header--sticky{% endif %}"
   style="
     --header-divider: {{ s.divider_width }}px;
     --header-pad: {{ s.padding_block }}px;
@@ -101,7 +101,11 @@
   {%- endif -%}
 </header>
 
-<dialog class="header__drawer" scroll-lock>
+<dialog
+  class="header__drawer{% if s.force_drawer_desktop %} header__drawer--desktop{% endif %}"
+  scroll-lock
+  style="--drawer-w-desktop: {{ s.drawer_width_desktop }}%;"
+>
   <div class="header__drawer-head">
     <button type="button" class="header__drawer-close" aria-label="Close menu" data-drawer-close>
       <svg viewBox="0 0 18 18" width="18" height="18" fill="none" aria-hidden="true"><path d="m1 1 16 16M17 1 1 17" stroke="currentColor" stroke-width="1.5"/></svg>
@@ -127,6 +131,23 @@
       {%- endfor -%}
     </ul>
   </nav>
+
+  <div class="header__drawer-footer">
+    {%- if s.header_cta_enabled and s.header_cta_label != blank -%}
+      <a href="{{ s.header_cta_link }}" class="button button--{{ s.header_cta_style }} header__drawer-cta">{{ s.header_cta_label }}</a>
+    {%- endif -%}
+
+    {%- if s.drawer_show_account and shop.customer_accounts_enabled -%}
+      <a href="{{ routes.account_url }}" class="header__drawer-account">
+        {{ 'icon-account.svg' | inline_asset_content }}
+        <span>{% if customer %}Account{% else %}Log in{% endif %}</span>
+      </a>
+    {%- endif -%}
+
+    {%- if s.drawer_show_social -%}
+      {%- render 'social-links' -%}
+    {%- endif -%}
+  </div>
 </dialog>
 
 {% stylesheet %}
@@ -238,20 +259,37 @@
 
   /* Mobile drawer */
   .header__drawer {
-    margin: 0; margin-inline-start: auto;
+    margin: 0;
     height: 100dvh; max-height: 100dvh;
-    width: min(86vw, 360px);
+    width: 100vw; max-width: 100vw;
     border: 0; padding: 1.25rem;
     background-color: var(--color-background); color: var(--color-foreground);
+    flex-direction: column;
   }
+  .header__drawer[open] { display: flex; }
   .header__drawer::backdrop { background: rgba(0,0,0,0.4); }
   .header__drawer-head { display: flex; justify-content: flex-end; }
   .header__drawer-close { background: none; border: 0; padding: 0.25rem; color: var(--color-foreground); cursor: pointer; }
+  .header__drawer-nav { flex: 1 1 auto; }
   .header__drawer-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
   .header__drawer-list a, .header__drawer-list summary {
     font-family: var(--menu-font); font-size: 1.0625rem; text-transform: var(--menu-case); cursor: pointer;
   }
   .header__drawer-list details ul { list-style: none; padding-inline-start: 1rem; margin-block-start: 0.75rem; display: grid; gap: 0.75rem; }
+  .header__drawer-footer {
+    margin-block-start: auto;
+    display: grid; gap: 1rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--color-foreground);
+  }
+  .header__drawer-cta { width: 100%; }
+  .header__drawer-account { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .header__drawer-account svg { width: 1.25rem; height: auto; }
+
+  /* Force drawer on desktop */
+  .header--force-drawer .header__menu { display: none; }
+  .header--force-drawer .header__bottom { display: none; }
+  .header--force-drawer .header__burger { display: inline-flex; }
 
   @media screen and (max-width: 749px) {
     .header__menu { display: none; }
@@ -263,7 +301,13 @@
     .header--logo-center .header__logo { justify-self: center; }
   }
   @media screen and (min-width: 750px) {
-    .header__drawer[open] { display: none; }
+    /* The standard drawer is mobile-only; the desktop drawer opts in */
+    .header__drawer:not(.header__drawer--desktop)[open] { display: none; }
+    .header__drawer--desktop {
+      width: var(--drawer-w-desktop, 35%);
+      max-width: var(--drawer-w-desktop, 35%);
+      margin-inline-start: auto;
+    }
   }
 {% endstylesheet %}
 
@@ -417,6 +461,12 @@
         { "value": "capitalize", "label": "Capitalize" }
       ]
     },
+
+    { "type": "header", "content": "Mobile and drawer" },
+    { "type": "checkbox", "id": "force_drawer_desktop", "label": "Use drawer menu on desktop", "default": false },
+    { "type": "range", "id": "drawer_width_desktop", "label": "Desktop drawer width", "min": 25, "max": 50, "step": 1, "unit": "%", "default": 35 },
+    { "type": "checkbox", "id": "drawer_show_account", "label": "Show account / log in in drawer", "default": true },
+    { "type": "checkbox", "id": "drawer_show_social", "label": "Show social icons in drawer", "default": false },
 
     { "type": "header", "content": "Header button" },
     { "type": "checkbox", "id": "header_cta_enabled", "label": "Show button", "default": false },
