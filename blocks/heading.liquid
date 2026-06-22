@@ -5,25 +5,23 @@
 
 
 <div
-  class="solis-heading"
+  class="heading"
   style="
     text-align: {{ block.settings.alignment }};
     {% render 'typography-style',
-      preset: s.heading_preset, 
-      font: s.heading_font, 
-      size: s.heading_size, 
-      line_height: s.heading_line_height, 
-      letter_spacing: s.heading_letter_spacing, 
-      text_case: s.heading_case,
-       wrap: s.heading_wrap %}
+      preset: block.settings.typography_preset,
+      font: block.settings.font,
+      size: block.settings.size,
+      line_height: block.settings.line_height,
+      letter_spacing: block.settings.letter_spacing,
+      text_case: block.settings.text_case,
+      wrap: block.settings.wrap
     %}
-
-    "
-    {{ s.heading }} 
+  "
+  {{ block.shopify_attributes }}
 >
-
+  {{ block.settings.text }}
 </div>
-
 
 
 {% schema %}
@@ -34,7 +32,7 @@
        "type": "richtext",
       "id": "heading",
       "label": "Heading",
-      "default": "<h1>Your headline here</h1>"
+      "default": "<h1>Your headline here<h1>"
     },
     {
       "type": "select",

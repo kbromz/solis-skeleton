@@ -7,20 +7,20 @@ SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
   class="solis-text"
   style="
     text-align: {{ block.settings.alignment }};
-
-{% render 'typography-style', 
- preset: s.body_preset, 
- font: s.body_font, 
- size: s.body_size, 
- line_height: s.body_line_height, 
- letter_spacing: s.body_letter_spacing, 
- text_case: s.body_case, 
- wrap: s.body_wrap %}
- 
- "{{ s.body }} >
-
+    {% render 'typography-style',
+      preset: block.settings.typography_preset,
+      font: block.settings.font,
+      size: block.settings.size,
+      line_height: block.settings.line_height,
+      letter_spacing: block.settings.letter_spacing,
+      text_case: block.settings.text_case,
+      wrap: block.settings.wrap
+    %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.text }}
 </div>
-
 
 
 {% schema %}
