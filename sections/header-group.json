@@ -19,8 +19,8 @@
           "settings": {
             "text": "FREE SHIPPING ON ORDERS $300+",
             "link": "shopify://collections/all",
-            "font": "var(--font-accent--family)",
-            "font_size": "1rem",
+            "font": "var(--font-body--family)",
+            "font_size": "0.75rem",
             "weight": "300",
             "letter_spacing": "normal",
             "case": "none"
@@ -34,10 +34,10 @@
       "settings": {
         "speed": 5,
         "section_width": "full-width",
-        "color_scheme": "",
+        "color_scheme": "scheme-5",
         "divider_width": 0,
-        "padding_top": 15,
-        "padding_bottom": 15
+        "padding_top": 10,
+        "padding_bottom": 10
       }
     },
     "header": {
@@ -46,10 +46,23 @@
         "logo_width": 120,
         "logo_width_mobile": 90,
         "logo_position": "center",
+        "color_scheme": "",
+        "enable_sticky_header": "always",
         "menu": "main-menu",
         "menu_position": "left",
         "menu_row": "top",
         "customer_account_menu": "customer-account-main-menu",
+        "drawer_color_scheme": "scheme-3",
+        "drawer_menu": "main-menu",
+        "force_drawer_desktop": false,
+        "drawer_width_desktop": 35,
+        "drawer_show_account": true,
+        "drawer_show_social": true,
+        "header_cta_enabled": true,
+        "header_cta_label": "Book now",
+        "header_cta_link": "",
+        "header_cta_style": "primary",
+        "show_search": true,
         "menu_font": "subheading",
         "menu_size": "0.9375rem",
         "menu_weight": "500",
@@ -80,19 +93,6 @@
         "tile_4_title": "",
         "tile_4_button_label": "Shop now",
         "tile_4_link": "",
-        "drawer_color_scheme": "scheme-3",
-        "drawer_menu": "main-menu",
-        "force_drawer_desktop": false,
-        "drawer_width_desktop": 35,
-        "drawer_show_account": true,
-        "drawer_show_social": true,
-        "header_cta_enabled": true,
-        "header_cta_label": "Book now",
-        "header_cta_link": "",
-        "header_cta_style": "primary",
-        "show_search": true,
-        "color_scheme": "",
-        "enable_sticky_header": "always",
         "divider_width": 0,
         "padding_block": 0
       }
