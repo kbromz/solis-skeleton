@@ -143,9 +143,52 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
+    },
+    "marquee_xiPYmi": {
+      "type": "marquee",
+      "blocks": {
+        "item_YR9TjX": {
+          "type": "item",
+          "settings": {
+            "text": "<p>New collection just released</p>",
+            "image_width": 40,
+            "image_width_mobile": 40
+          }
+        },
+        "item_936NcH": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Shop Now</p>",
+            "image_width": 40,
+            "image_width_mobile": 40
+          }
+        }
+      },
+      "block_order": [
+        "item_YR9TjX",
+        "item_936NcH"
+      ],
+      "name": "💫 Marquee Text Banner",
+      "settings": {
+        "link_url": "",
+        "color_text": "#fff",
+        "color_bg": "#000",
+        "color_border": "#000",
+        "border_width": 0,
+        "text_size": 30,
+        "text_size_mobile": 20,
+        "item_padding": 20,
+        "direction": "normal",
+        "speed": 100,
+        "padding": 10,
+        "mobile_hide": false,
+        "css_class": "",
+        "custom_css": ""
+      }
     }
   },
   "order": [
-    "hero_dXq8DY"
+    "hero_dXq8DY",
+    "marquee_xiPYmi"
   ]
 }
