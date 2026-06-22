@@ -1,59 +1,119 @@
-{% doc %}
-  Renders a text block.
-
-  @example
-  {% content_for 'block', type: 'text', id: 'text' %}
-{% enddoc %}
+{% comment %}
+SOLIS TEXT BLOCK — TYPOGRAPHY INTEGRATED (SAFE VERSION)
+{% endcomment %}
 
 <div
-  class="text {{ block.settings.text_style }}"
-  style="--text-align: {{ block.settings.alignment }}"
+  class="solis-text"
+  style="text-align: {{ block.settings.alignment }}; {% render 'typography-style',
+    preset: block.settings.typography_preset,
+    font: block.settings.font,
+    size: block.settings.size,
+    line_height: block.settings.line_height,
+    letter_spacing: block.settings.letter_spacing,
+    text_case: block.settings.text_case,
+    wrap: block.settings.wrap
+  %}"
   {{ block.shopify_attributes }}
 >
   {{ block.settings.text }}
 </div>
 
-{% stylesheet %}
-  .text {
-    text-align: var(--text-align);
-  }
-  .text--title {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-  .text--subtitle {
-    font-size: 1.5rem;
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.text",
+  "name": "Text",
   "settings": [
     {
-      "type": "text",
+      "type": "richtext",
       "id": "text",
-      "label": "t:labels.text",
-      "default": "Text"
+      "label": "Text"
     },
+
     {
       "type": "select",
-      "id": "text_style",
-      "label": "t:labels.text_style",
+      "id": "typography_preset",
+      "label": "Typography Preset",
       "options": [
-        { "value": "text--title", "label": "t:options.text_style.title" },
-        { "value": "text--subtitle", "label": "t:options.text_style.subtitle" },
-        { "value": "text--normal", "label": "t:options.text_style.normal" }
+        { "value": "paragraph", "label": "Paragraph" },
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" },
+        { "value": "custom", "label": "Custom" }
       ],
-      "default": "text--title"
+      "default": "paragraph"
     },
+
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "alignment",
-      "label": "t:labels.alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
       "default": "left"
+    },
+
+    {
+      "type": "select",
+      "id": "wrap",
+      "label": "Text Wrap",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "balance", "label": "Balance" },
+        { "value": "pretty", "label": "Pretty" },
+        { "value": "none", "label": "No Wrap" }
+      ],
+      "default": "default"
+    },
+
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "default"
+    },
+
+    {
+      "type": "select",
+      "id": "letter_spacing",
+      "label": "Letter Spacing",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "default"
+    },
+
+    {
+      "type": "text",
+      "id": "size",
+      "label": "Custom Size (px/em)",
+      "default": "14px"
+    },
+
+    {
+      "type": "select",
+      "id": "text_case",
+      "label": "Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
     }
-  ],
-  "presets": [{ "name": "t:general.text" }]
+  ]
 }
 {% endschema %}
