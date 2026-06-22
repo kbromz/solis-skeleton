@@ -163,17 +163,6 @@
             "padding_left": 26
           },
           "blocks": {
-            "button_mjqKQf": {
-              "type": "button",
-              "name": "Button",
-              "settings": {
-                "label": "Shop now",
-                "link": "",
-                "style": "secondary",
-                "full_width": false
-              },
-              "blocks": {}
-            },
             "heading_GxFi4Q": {
               "type": "heading",
               "name": "Heading",
@@ -191,6 +180,17 @@
                 "padding_right": 48,
                 "padding_bottom": 48,
                 "padding_left": 48
+              },
+              "blocks": {}
+            },
+            "button_mjqKQf": {
+              "type": "button",
+              "name": "Button",
+              "settings": {
+                "label": "Shop now",
+                "link": "",
+                "style": "secondary",
+                "full_width": false
               },
               "blocks": {}
             },
@@ -256,8 +256,8 @@
             }
           },
           "block_order": [
-            "button_mjqKQf",
             "heading_GxFi4Q",
+            "button_mjqKQf",
             "text_VVEweD",
             "text_PnbwX4",
             "text_gxPG3a"
