@@ -163,9 +163,9 @@
               "type": "heading",
               "name": "Heading",
               "settings": {
-                "heading": "testing this container out",
+                "heading": "<p>testing this container out</p>",
                 "heading_tag": "h2",
-                "heading_preset": "custom",
+                "heading_preset": "default",
                 "heading_font": "heading",
                 "heading_size": "3.5rem",
                 "heading_line_height": "tight",
@@ -180,14 +180,14 @@
               "name": "Text",
               "settings": {
                 "text": "<p>Text</p>",
-                "preset": "custom",
-                "font": "body",
-                "size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "text_case": "none",
-                "wrap": "default",
-                "alignment": "left"
+                "heading_tag": "h2",
+                "heading_preset": "h1",
+                "heading_font": "heading",
+                "heading_size": "3.5rem",
+                "heading_line_height": "tight",
+                "heading_letter_spacing": "normal",
+                "heading_case": "none",
+                "heading_wrap": "balance"
               },
               "blocks": {}
             }
