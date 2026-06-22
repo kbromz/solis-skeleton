@@ -154,9 +154,13 @@
             "direction": "row",
             "align_x": "left",
             "align_y": "top",
-            "gap": 16,
-            "width": "fill",
-            "height": "fit"
+            "gap": 66,
+            "width": "custom",
+            "height": "fit",
+            "padding_top": 160,
+            "padding_right": 48,
+            "padding_bottom": 48,
+            "padding_left": 48
           },
           "blocks": {
             "button_mjqKQf": {
