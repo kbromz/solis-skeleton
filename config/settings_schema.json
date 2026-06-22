@@ -140,6 +140,12 @@
         "label": "Accent"
       },
       {
+        "type": "font_picker",
+        "id": "type_button_font",
+        "default": "work_sans_n5",
+        "label": "Button"
+      },
+      {
         "type": "header",
         "content": "Paragraph"
       },
@@ -1287,6 +1293,10 @@
           {
             "value": "accent",
             "label": "Accent"
+          },
+          {
+            "value": "button",
+            "label": "Button (custom)"
           }
         ]
       },
@@ -1351,6 +1361,10 @@
           {
             "value": "accent",
             "label": "Accent"
+          },
+          {
+            "value": "button",
+            "label": "Button (custom)"
           }
         ]
       },
@@ -1967,6 +1981,45 @@
             "label": "Fit content"
           }
         ]
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Add full profile URLs. Only the ones you fill in will show."
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn"
       }
     ]
   },
