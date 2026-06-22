@@ -9,19 +9,21 @@
   style="
     text-align: {{ block.settings.alignment }};
     {% render 'typography-style',
-      preset: block.settings.typography_preset,
-      font: block.settings.font,
-      size: block.settings.size,
-      line_height: block.settings.line_height,
-      letter_spacing: block.settings.letter_spacing,
-      text_case: block.settings.text_case,
-      wrap: block.settings.wrap
+      preset: s.heading_preset, 
+      font: s.heading_font, 
+      size: s.heading_size, 
+      line_height: s.heading_line_height, 
+      letter_spacing: s.heading_letter_spacing, 
+      text_case: s.heading_case,
+       wrap: s.heading_wrap %}
     %}
-  "
-  {{ block.shopify_attributes }}
+
+    "
+    {{ s.heading }} 
 >
   {{ block.settings.text }}
 </div>
+
 
 
 {% schema %}
