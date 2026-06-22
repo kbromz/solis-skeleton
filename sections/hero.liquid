@@ -40,7 +40,10 @@
   class="hero full-width color-{{ s.color_scheme }}{% if s.section_width == 'page-width' %} hero--page{% endif %}"
   data-autoplay="{% if s.autoplay and multiple %}true{% else %}false{% endif %}"
   data-speed="{{ s.autoplay_speed }}"
-  style="--slide-h: {{ slide_h }}; --slide-h-mobile: {{ slide_h_m }}; --hero-speed: {{ s.autoplay_speed }}s; --hero-radius: {{ s.corner_radius }}px;"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="Slideshow"
+  style="--slide-h: {{ slide_h }}; --slide-h-mobile: {{ slide_h_m }}; --hero-speed: {{ s.autoplay_speed }}s; --hero-radius: {{ s.corner_radius }}px; --sec-pt: {{ s.padding_top }}px; --sec-pb: {{ s.padding_bottom }}px;"
 >
   <div class="hero__viewport">
     <div class="hero__slides">
@@ -78,7 +81,7 @@
 </hero-slideshow>
 
 {% stylesheet %}
-  .hero { display: block; }
+  .hero { display: block; padding-block: var(--sec-pt, 0) var(--sec-pb, 0); }
   .hero--page .hero__viewport {
     max-width: var(--page-width);
     margin-inline: auto;
@@ -115,7 +118,7 @@
   }
   /* Progress bars — slim */
   .hero__bar {
-    width: 28px; height: 2px; padding: 0; border: 0; border-radius: 999px;
+    width: 32px; height: 2px; padding: 0; border: 0; border-radius: 999px;
     background: color-mix(in srgb, var(--color-foreground) 28%, transparent);
     cursor: pointer; overflow: hidden;
   }
@@ -132,7 +135,7 @@
 
   /* Dots */
   .hero__dot {
-    width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%;
+    width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%;
     background: color-mix(in srgb, var(--color-foreground) 28%, transparent);
     cursor: pointer;
   }
@@ -240,7 +243,11 @@
 
     { "type": "header", "content": "Autoplay" },
     { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate slides", "default": true },
-    { "type": "range", "id": "autoplay_speed", "label": "Speed", "min": 3, "max": 12, "step": 1, "unit": "sec", "default": 6 }
+    { "type": "range", "id": "autoplay_speed", "label": "Speed", "min": 3, "max": 12, "step": 1, "unit": "sec", "default": 6 },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 160, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 160, "step": 2, "unit": "px", "default": 0 }
   ],
   "presets": [
     { "name": "Hero", "blocks": [ { "type": "slide" }, { "type": "slide" } ] }
